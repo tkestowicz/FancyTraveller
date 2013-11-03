@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FancyTravellerMvc", "FancyTravellerMvc\FancyTravellerMvc.csproj", "{5875C574-219B-4F68-ABFB-B07D689C8365}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FancyTravellerMvc.Tests", "FancyTravellerMvc.Tests\FancyTravellerMvc.Tests.csproj", "{420140AC-0EDD-4A02-9214-6BC2462F33D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5875C574-219B-4F68-ABFB-B07D689C8365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5875C574-219B-4F68-ABFB-B07D689C8365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5875C574-219B-4F68-ABFB-B07D689C8365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5875C574-219B-4F68-ABFB-B07D689C8365}.Release|Any CPU.Build.0 = Release|Any CPU
+		{420140AC-0EDD-4A02-9214-6BC2462F33D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420140AC-0EDD-4A02-9214-6BC2462F33D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420140AC-0EDD-4A02-9214-6BC2462F33D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420140AC-0EDD-4A02-9214-6BC2462F33D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
