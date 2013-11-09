@@ -1,21 +1,161 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <title>FancyTraveler UI Mockup</title>
-    <link rel="stylesheet" href="../Content/ext/boostrap-3.0.2.min.css">
+    <link rel="stylesheet" href="../Content/ext/bootstrap-theme-flatty-3.0.3.min.css">
+    <style type="text/css">
+        body {
+            background-color: #27ae60;
+        }
+
+        header, footer, section, form {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        header, nav {
+            margin-bottom: 30px;
+        }
+
+        header {
+            color: #34495e;
+        }
+
+        nav {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            background-color: #34495e;
+        }
+
+            nav label {
+                color: #fff;
+            }
+
+        footer {
+            margin-bottom: 15px;
+        }
+
+        .correct-alignment {
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+
+        a {
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .ignoredCities a {
+            color: #fff;
+        }
+
+        #map {
+            width: 100%;
+        }
+
+        
+
+
+        .input-group-addon {
+            border: none;
+        }
+
+        .form-control {
+            border-color: #3498db;
+        }
+
+        .nav .input-group-addon {
+            color: #fff;
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+    </style>
 </head>
-<body ng-app="fancyTraveler">
-    <h2>Fancy Traveler</h2>
-    <div ng-controller="navigation">
+<body class="center-block">
+    <header>
+        <h2>Fancy Traveler</h2>
+        <small>Solution for Travelling Salesman Problem implemented as a single page application.</small>
+    </header>
+    <nav>
         <form role="form">
-            <div class="form-group">
-                <label for="sourceLocation">Start city</label>
-                <input type="text" class="form-control" id="sourceLocation" placeholder="Enter name of the city" />
+            <div class="row">
+                <div class="form-group col-md-5 col-sm-5" ng-controller="suggestingCities">
+                    <label for="sourceLocation">Startup city</label>
+                    <div class="nav input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
+                        <select class="form-control" id="sourceLocation" ng-model="selected" ng-options="city.name for city in cities">
+                            <option value="">--Select City--</option>
+                        </select>
+                    </div>
+                    <p class="text-danger">Startup city is required</p>
+                </div>
+                <div class="form-group has-success col-md-5 col-sm-5 col-sm-offset-2 col-md-offset-2" ng-controller="suggestingCities">
+                    <label for="destinationLocation">Destination city</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-flag"></span></span>
+                        <select class="form-control" id="destinationLocation" ng-model="selected" ng-options="city.name for city in cities">
+                            <option value="">--Select City--</option>
+                        </select>
+                    </div>
+                    <p class="text-danger">Destination city is required</p>
+                </div>
             </div>
+            <div class="row">
+                <div class="form-group col-md-12 col-sm-12" ng-controller="suggestingCities">
+                    <label for="destinationLocation">Cities to ignore</label>
+                    <div class="nav input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-eye-close"></span></span>
+                        <input type="text" class="form-control" id="Text1" placeholder="Enter name of the city you want to exclude from the route and press [Enter]" ng-model="selected" typeahead="city for city in cities | filter:$viewValue | limitTo:10" />
+                    </div>
+                    <p class="text-danger">Provided city is not available</p>
+                </div>
+                <div class="row">
+                    <div class="panel panel-info correct-alignment">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Ignored cities</h3>
+                        </div>
+                        <div class="panel-body ignoredCities">
+                            <span class="label label-primary">Vienna <a class="glyphicon glyphicon-remove"></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12 col-sm-12">
+                    <button class="btn btn-block btn-success">Search for the shortest route <span class="glyphicon glyphicon-road"></span></button>
+                </div>
+            </div>
+
         </form>
-    </div>
+    </nav>
+    <section class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Search results</h3>
+        </div>
+        <div class="panel-body">
+            The shortest path between A and B has 100 km.
+        </div>
+    </section>
+    <section class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Route preview</h3>
+        </div>
+        <div class="panel-body">
+            <section id="map" ng-controller="map">
+                <div ui-map="mapWithTheRoute" ui-options="mapOptions" class="map-canvas"></div>
+            </section>
+        </div>
+    </section>
+    <footer class="text-center">
+        Created by <a href="http://mjedrzejewski.wordpress.com/">Maciej Jędrzejewski</a> and <a href="http://tymoteuszkestowicz.com">Tymoteusz Kęstowicz</a>. Copyright &copy; 2013.
+    </footer>
     <script type="text/javascript" src="../Scripts/angular.min.js"></script>
     <script type="text/javascript" src="../Scripts/ui-bootstrap-0.6.0.min.js"></script>
+    <script type="text/javascript" src="../Scripts/ui-map/event.js"></script>
+    <script type="text/javascript" src="../Scripts/ui-map/ui-map.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=onGoogleMapsApiReady"></script>
     <script type="text/javascript" src="../Scripts/app.js"></script>
 </body>
 </html>
