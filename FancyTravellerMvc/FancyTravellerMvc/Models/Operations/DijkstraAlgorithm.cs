@@ -13,7 +13,7 @@ namespace FancyTravellerMvc.Models.Operations
         private List<double> listOfDistances = new List<double>();
         private Queue<int> allVerticesQueue = new Queue<int>();
 
-        public string DijkstraAlgorithm(int sourceTop, int allVertices, List<List<Tuple<int, int>>> listOfNeighboursDistance, int destinationTop)
+        public string UseDijkstraAlgorithm(int sourceTop, int allVertices, List<List<Tuple<int, int>>> listOfNeighboursDistance, int destinationTop)
         {
             for (int i = 0; i < allVertices; ++i)
             {
