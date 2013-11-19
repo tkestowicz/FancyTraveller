@@ -4,6 +4,7 @@ using System.Web.Script.Serialization;
 using FancyTraveller.Domain.Infrastracture;
 using FancyTraveller.Domain.Model;
 using FancyTraveller.Domain.Services;
+using FancyTraveller.Domain.Tests.Integration.Helpers;
 using FancyTraveller.Domain.Tests.Integration.TestingData;
 using NUnit.Framework;
 using Should;
@@ -34,15 +35,13 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
         [Test]
         public void get_all_verticies___happy_path_with_no_citites_to_skip___list_of_verticies_is_returned()
         {
-            var result = service.DistancesBetweenCitites(Enumerable.Empty<string>());
+            var noCititesToSkip = Enumerable.Empty<string>();
+
+            var result = service.DistancesBetweenCitites(noCititesToSkip);
 
             var expectedListOfVerticies = RouteServiceTestingData.Verticies;
 
-            var serializer = new JavaScriptSerializer();
-            var serializedResult = serializer.Serialize(result);
-            var serializedExptectedResult = serializer.Serialize(expectedListOfVerticies);
-
-            serializedResult.ShouldEqual(serializedExptectedResult);
+            result.ToJson().ShouldEqual(expectedListOfVerticies.ToJson());
         }
     }
 }
