@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestingData\RouteServiceTestingData.cs" />
     <Compile Include="Tests\RouteServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,11 +58,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="App_Data\availableCities.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
