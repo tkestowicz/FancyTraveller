@@ -152,10 +152,13 @@ var fancyParser = function(gMaps)
 		var indexOfNameElement = 0;
 		var distanceBetweenCities = {};
 
-		distanceBetweenCities.sourceName = citiesToParse[indexOfSourceCity][indexOfNameElement];
-		distanceBetweenCities.sourceLocation = gMaps.getLocationForTheCity(distanceBetweenCities.sourceName);
-		distanceBetweenCities.destinationName = citiesToParse[indexOfDestinationCity][indexOfNameElement];
-		distanceBetweenCities.destinationLocation = gMaps.getLocationForTheCity(distanceBetweenCities.destinationName);
+		distanceBetweenCities.sourceCity = {};
+		distanceBetweenCities.destinationCity = {};
+
+		distanceBetweenCities.sourceCity.name = citiesToParse[indexOfSourceCity][indexOfNameElement];
+		distanceBetweenCities.sourceCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.sourceName);
+		distanceBetweenCities.destinationCity.name = citiesToParse[indexOfDestinationCity][indexOfNameElement];
+		distanceBetweenCities.destinationCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.destinationName);
 		distanceBetweenCities.distance = citiesToParse[indexOfDestinationCity][1][indexOfSourceCity];
 
 		return distanceBetweenCities;
