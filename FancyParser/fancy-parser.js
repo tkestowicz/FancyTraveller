@@ -156,9 +156,9 @@ var fancyParser = function(gMaps)
 		distanceBetweenCities.destinationCity = {};
 
 		distanceBetweenCities.sourceCity.name = citiesToParse[indexOfSourceCity][indexOfNameElement];
-		distanceBetweenCities.sourceCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.sourceName);
+		distanceBetweenCities.sourceCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.sourceCity.name);
 		distanceBetweenCities.destinationCity.name = citiesToParse[indexOfDestinationCity][indexOfNameElement];
-		distanceBetweenCities.destinationCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.destinationName);
+		distanceBetweenCities.destinationCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.destinationCity.name);
 		distanceBetweenCities.distance = citiesToParse[indexOfDestinationCity][1][indexOfSourceCity];
 
 		return distanceBetweenCities;
