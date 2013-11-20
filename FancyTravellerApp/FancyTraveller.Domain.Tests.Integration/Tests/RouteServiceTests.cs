@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Script.Serialization;
 using FancyTraveller.Domain.Infrastracture;
+using FancyTraveller.Domain.Logic;
 using FancyTraveller.Domain.Model;
 using FancyTraveller.Domain.Services;
 using FancyTraveller.Domain.Tests.Integration.Helpers;
@@ -19,7 +20,7 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
         [SetUp]
         public void InitializeContext()
         {
-            this.service = new RouteService(new VerticesRepository(ConfigurationManager.AppSettings, new FileReader()));
+            this.service = new RouteService(new VerticesRepository(ConfigurationManager.AppSettings, new FileReader()), new DijkstraRouteFinder());
         }
 
         [Test]
