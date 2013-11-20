@@ -11,8 +11,8 @@ namespace FancyTraveller.Web.UI
         {
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{action}/{id}",
+                defaults: new { controller = "Route", id = RouteParameter.Optional }
             );
         }
     }
