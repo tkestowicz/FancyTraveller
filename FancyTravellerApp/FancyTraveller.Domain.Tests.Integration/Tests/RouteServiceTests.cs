@@ -40,7 +40,7 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
 
             var result = service.DistancesBetweenCitites(noCititesToSkip);
 
-            var expectedListOfVerticies = RouteServiceTestingData.Verticies;
+            var expectedListOfVerticies = RouteServiceTestingData.Vertices;
 
             result.ToJson().ShouldEqual(expectedListOfVerticies.ToJson());
         }
@@ -52,12 +52,24 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
 
             var result = service.DistancesBetweenCitites(cititesToSkip);
 
-            var allVerticies = RouteServiceTestingData.Verticies;
+            var allVerticies = RouteServiceTestingData.Vertices;
             var expectedListOfVerticies =
                 allVerticies.Where(v => cititesToSkip.Contains(v.DestinationCity.Name) == false)
                     .Where(v => cititesToSkip.Contains(v.SourceCity.Name) == false).Select(v => v);
 
             result.ToJson().ShouldEqual(expectedListOfVerticies.ToJson());
+        }
+
+        [TestCase("Madrid", 40.4167754, -3.7037902)]
+        [TestCase("Amsterdam", 52.3702157, 4.895167900000001)]
+        [TestCase("Zurich", 47.3686498, 8.539182499999999)]
+        [TestCase("NoExistingLocation", 0, 0)]
+        public void get_location___happy_path___location_is_returned(string city, double expectedLatitude, double expectedLongitude)
+        {
+            var result = service.GetLocationOf(city);
+
+            result.Latitude.ShouldEqual(expectedLatitude);
+            result.Longitude.ShouldEqual(expectedLongitude);
         }
     }
 }

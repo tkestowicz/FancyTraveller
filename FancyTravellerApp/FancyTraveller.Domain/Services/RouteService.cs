@@ -33,7 +33,7 @@ namespace FancyTraveller.Domain.Services
             if (listOfCititesToSkip == null || !listOfCititesToSkip.Any())
                 return vertexRepository.GetAll();
             
-            return VerticiesWithoutCititesToSkip(listOfCititesToSkip);
+            return VerticesWithoutCititesToSkip(listOfCititesToSkip);
         }
 
         public int FindShortestRoute(string source, string destination, IEnumerable<string> cititesToSkip)
@@ -41,7 +41,20 @@ namespace FancyTraveller.Domain.Services
             return routeFinder.FindShortestRoute(source, destination, DistancesBetweenCitites(cititesToSkip));
         }
 
-        private IEnumerable<Vertex> VerticiesWithoutCititesToSkip(IEnumerable<string> citiesToSkip)
+        public Location GetLocationOf(string city)
+        {
+            var vertex = vertexRepository.GetAll().FirstOrDefault(v => v.DestinationCity.Name == city || v.SourceCity.Name == city);
+
+            if(vertex == null)
+                return new Location(){ Latitude = 0, Longitude = 0 };
+
+            if (vertex.SourceCity.Name == city)
+                return vertex.SourceCity.Location;
+
+            return vertex.DestinationCity.Location;
+        }
+
+        private IEnumerable<Vertex> VerticesWithoutCititesToSkip(IEnumerable<string> citiesToSkip)
         {
             return
                 vertexRepository.GetAll()

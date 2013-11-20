@@ -8,5 +8,6 @@ namespace FancyTraveller.Domain.Services
         IEnumerable<string> AvailableCities { get; }
         IEnumerable<Vertex> DistancesBetweenCitites(IEnumerable<string> listOfCititesToSkip);
         int FindShortestRoute(string source, string destination, IEnumerable<string> cititesToSkip);
+        Location GetLocationOf(string city);
     }
 }

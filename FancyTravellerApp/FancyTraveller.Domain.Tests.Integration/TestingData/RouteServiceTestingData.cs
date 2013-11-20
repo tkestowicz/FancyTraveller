@@ -18,11 +18,11 @@ namespace FancyTraveller.Domain.Tests.Integration.TestingData
             var availableCitiesJson = File.ReadAllText("App_Data/availableCities.txt");
             var verticiesJson = File.ReadAllText("App_Data/cities.txt");
 
-            Verticies = DeserializeVerticiesJsonToEnumerable(verticiesJson);
+            Vertices = DeserializeVerticesJsonToEnumerable(verticiesJson);
             AvailableCities = DeserializeCitiesJsonToEnumerable(availableCitiesJson);
         }
 
-        public static IEnumerable<Vertex> Verticies { get; set; }
+        public static IEnumerable<Vertex> Vertices { get; set; }
 
         private static IEnumerable<string> DeserializeCitiesJsonToEnumerable(string availableCitiesJson)
         {
@@ -31,7 +31,7 @@ namespace FancyTraveller.Domain.Tests.Integration.TestingData
             return serializer.Deserialize<List<City>>(availableCitiesJson).Select(c => c.Name).ToList().OrderBy(s => s);
         }
 
-        private static IEnumerable<Vertex> DeserializeVerticiesJsonToEnumerable(string verticiesJson)
+        private static IEnumerable<Vertex> DeserializeVerticesJsonToEnumerable(string verticiesJson)
         {
             var serializer = new JavaScriptSerializer();
 
