@@ -43,5 +43,20 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
 
             result.ToJson().ShouldEqual(expectedListOfVerticies.ToJson());
         }
+
+        [Test]
+        public void get_verticies___cities_to_skip_passed___list_of_verticies_without_cities_to_skip()
+        {
+            var cititesToSkip = new[] { "Amsterdam", "Madrid", "Turin" };
+
+            var result = service.DistancesBetweenCitites(cititesToSkip);
+
+            var allVerticies = RouteServiceTestingData.Verticies;
+            var expectedListOfVerticies =
+                allVerticies.Where(v => cititesToSkip.Contains(v.DestinationCity.Name) == false)
+                    .Where(v => cititesToSkip.Contains(v.SourceCity.Name) == false).Select(v => v);
+
+            result.ToJson().ShouldEqual(expectedListOfVerticies.ToJson());
+        }
     }
 }

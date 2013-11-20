@@ -27,7 +27,18 @@ namespace FancyTraveller.Domain.Services
 
         public IEnumerable<Vertex> DistancesBetweenCitites(IEnumerable<string> listOfCititesToSkip)
         {
-            return vertexRepository.GetAll();
+            if (listOfCititesToSkip == null || !listOfCititesToSkip.Any())
+                return vertexRepository.GetAll();
+            
+            return VerticiesWithoutCititesToSkip(listOfCititesToSkip);
+        }
+
+        private IEnumerable<Vertex> VerticiesWithoutCititesToSkip(IEnumerable<string> citiesToSkip)
+        {
+            return
+                vertexRepository.GetAll()
+                    .Where(v => !citiesToSkip.Contains(v.DestinationCity.Name) && !citiesToSkip.Contains(v.SourceCity.Name))
+                    .Select(v => v);
         }
 
         private IEnumerable<string> ReadAllCities(Func<Vertex, string> field)
