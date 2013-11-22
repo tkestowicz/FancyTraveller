@@ -14,6 +14,9 @@ namespace FancyTraveller.Web.UI
                 routeTemplate: "api/{action}/{id}",
                 defaults: new { controller = "Route", id = RouteParameter.Optional }
             );
+
+            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
         }
     }
 }

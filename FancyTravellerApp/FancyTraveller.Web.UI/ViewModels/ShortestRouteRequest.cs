@@ -6,6 +6,6 @@ namespace FancyTraveller.Web.UI.ViewModels
     {
         public string SourceCity { get; set; }
         public string DestinationCity { get; set; }
-        public List<string> CititesToSkip { get; set; }
+        public List<string> CitiesToSkip { get; set; }
     }
 }

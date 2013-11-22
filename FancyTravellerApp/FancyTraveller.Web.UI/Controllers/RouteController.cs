@@ -2,14 +2,12 @@
 using System.Configuration;
 using System.Linq;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using FancyTraveller.Domain.Infrastracture;
 using FancyTraveller.Domain.Logic;
 using FancyTraveller.Domain.Model;
 using FancyTraveller.Domain.POCO;
 using FancyTraveller.Domain.Services;
 using FancyTraveller.Web.UI.ViewModels;
-using Newtonsoft.Json;
 
 namespace FancyTraveller.Web.UI.Controllers
 {
@@ -29,11 +27,9 @@ namespace FancyTraveller.Web.UI.Controllers
         }
 
         [HttpPost]
-        public ShortestRouteResponse FindShortestRoute([FromBody] string jsonBody)
+        public ShortestRouteResponse FindShortestRoute(ShortestRouteRequest request)
         {
-            var request = JsonConvert.DeserializeObject<ShortestRouteRequest>(jsonBody);
-
-            var result = service.FindShortestRoute(request.SourceCity, request.DestinationCity, null);
+            var result = service.FindShortestRoute(request.SourceCity, request.DestinationCity, request.CitiesToSkip);
             
             return new ShortestRouteResponse()
             {
