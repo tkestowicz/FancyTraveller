@@ -51,7 +51,7 @@ namespace FancyTraveller.Domain.Logic
             return "Shortest road from " + sourceTop + " to " + destinationTop + " is: " + listOfDistances[destinationTop].ToString() + " km";
         }
 
-        public int FindShortestRoute(string source, string destination, IEnumerable<Vertex> vertices)
+        public int FindShortestRoute(string source, string destination, int allVertices, IEnumerable<Vertex> vertices)
         {
             //TODO: the method above should be rewritten.
             return 0;
