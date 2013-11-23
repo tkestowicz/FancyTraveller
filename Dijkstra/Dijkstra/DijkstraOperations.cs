@@ -53,7 +53,7 @@ namespace Dijkstra
         //    return "Shortest road from " + sourceTop + " to " + destinationTop + " is: " + listOfDistances[destinationTop].ToString() + " km";
         //}
 
-        public string DijkstraAlgorithm(int sourceTop, int allVertices, List<List<Tuple<int, int>>> listOfNeighboursDistance, int destinationTop)
+        public string DijkstraAlgorithm(int sourceTop, int destinationTop, int allVertices, List<List<Vertex>> listOfNeighboursDistance)
         {
             for (int i = 0; i < allVertices; ++i)
             {
@@ -73,8 +73,8 @@ namespace Dijkstra
                     for (int i = 0; i < listOfNeighboursDistance[verticePickedFromQueue].Count; ++i)
                     {
 
-                        verticeNeighbour = listOfNeighboursDistance[verticePickedFromQueue][i].Item1;
-                        toNeighbourCost = listOfNeighboursDistance[verticePickedFromQueue][i].Item2;
+                        verticeNeighbour = listOfNeighboursDistance[verticePickedFromQueue][i].DestinationCity;
+                        toNeighbourCost = listOfNeighboursDistance[verticePickedFromQueue][i].Distance;
 
                         if (listOfDistances[verticeNeighbour] > listOfDistances[verticePickedFromQueue] + toNeighbourCost)
                         {
@@ -90,7 +90,5 @@ namespace Dijkstra
 
             return "Shortest road from " + sourceTop + " to " + destinationTop + " is: " + listOfDistances[destinationTop].ToString() + " km";
         }
-
-        
     }
 }
