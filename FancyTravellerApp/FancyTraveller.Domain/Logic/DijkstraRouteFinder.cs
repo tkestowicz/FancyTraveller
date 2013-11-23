@@ -13,9 +13,9 @@ namespace FancyTraveller.Domain.Logic
         private List<double> listOfDistances = new List<double>();
         private Queue<int> allVerticesQueue = new Queue<int>();
 
-        public int FindShortestRoute(int sourceTop, int destinationTop, int allVertices, List<List<Vertex>> vertices)
+        public int FindShortestRoute(int sourceTop, int destinationTop, int allVertices, IEnumerable<IEnumerable<Vertex>> vertices)
         {
-
+            List<List<Vertex>> neighbourDistances = vertices as List<List<Vertex>>;
             for (int i = 0; i < allVertices; ++i)
             {
                 listOfDistances.Add(i);
@@ -31,11 +31,11 @@ namespace FancyTraveller.Domain.Logic
 
                 if (verticePickedFromQueue != 0)
                 {
-                    for (int i = 0; i < vertices[verticePickedFromQueue].Count; ++i)
+                    for (int i = 0; i < neighbourDistances[verticePickedFromQueue].Count; ++i)
                     {
 
-                        verticeNeighbour = vertices[verticePickedFromQueue][i].DestinationCity.CityId;
-                        toNeighbourCost = vertices[verticePickedFromQueue][i].Distance;
+                        verticeNeighbour = neighbourDistances[verticePickedFromQueue][i].DestinationCity.CityId;
+                        toNeighbourCost = neighbourDistances[verticePickedFromQueue][i].Distance;
 
                         if (listOfDistances[verticeNeighbour] > listOfDistances[verticePickedFromQueue] + toNeighbourCost)
                         {
