@@ -53,8 +53,9 @@ namespace Dijkstra
         //    return "Shortest road from " + sourceTop + " to " + destinationTop + " is: " + listOfDistances[destinationTop].ToString() + " km";
         //}
 
-        public string DijkstraAlgorithm(int sourceTop, int destinationTop, int allVertices, List<List<Vertex>> listOfNeighboursDistance)
+        public string DijkstraAlgorithm(int sourceTop, int destinationTop, int allVertices, IEnumerable<IEnumerable<Vertex>> listOfNeighboursDistance1)
         {
+            List<List<Vertex>> listOfNeighboursDistance = listOfNeighboursDistance1 as List<List<Vertex>>;
             for (int i = 0; i < allVertices; ++i)
             {
                 listOfDistances.Add(i);
