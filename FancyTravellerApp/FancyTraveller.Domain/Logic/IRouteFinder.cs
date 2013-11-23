@@ -5,6 +5,6 @@ namespace FancyTraveller.Domain.Logic
 {
     public interface IRouteFinder
     {
-        int FindShortestRoute(string source, string destination, int allVertices, IEnumerable<Vertex> vertices);
+        int FindShortestRoute(int sourceTop, int destinationTop, int allVertices, List<List<Vertex>> vertices);
     }
 }
