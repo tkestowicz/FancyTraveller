@@ -36,9 +36,9 @@ namespace FancyTraveller.Domain.Services
             return VerticesWithoutCititesToSkip(listOfCititesToSkip);
         }
 
-        public int FindShortestRoute(string source, string destination, IEnumerable<string> cititesToSkip)
+        public int FindShortestRoute(int source, int destination, int numberOfAllVertices, IEnumerable<IEnumerable<Vertex>> vertices/*IEnumerable<string> cititesToSkip*/)
         {
-            return routeFinder.FindShortestRoute(source, destination, DistancesBetweenCitites(cititesToSkip));
+            return routeFinder.FindShortestRoute(source, destination, numberOfAllVertices, vertices/*DistancesBetweenCitites(cititesToSkip)*/);
         }
 
         public Location GetLocationOf(string city)

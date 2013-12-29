@@ -42,7 +42,7 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
             var noCititesToSkip = Enumerable.Empty<string>();
 
             A.CallTo(() => repositoryMock.GetAll()).Returns(preparedData);
-            
+             
             var result = service.FindShortestRoute(source, destination, noCititesToSkip);
 
             const int expectedDistance = 950;
