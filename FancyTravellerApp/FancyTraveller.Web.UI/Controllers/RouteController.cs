@@ -38,11 +38,13 @@ namespace FancyTraveller.Web.UI.Controllers
             {
                 SourceCity = new City()
                 {
+                    CityId = request.SourceCityId,
                     Name = request.SourceCity,
                     Location = service.GetLocationOf(request.SourceCity)
                 },
                 DestinationCity = new City()
                 {
+                    CityId = request.DestinationCityId,
                     Name = request.DestinationCity,
                     Location = service.GetLocationOf(request.DestinationCity)
                 },
