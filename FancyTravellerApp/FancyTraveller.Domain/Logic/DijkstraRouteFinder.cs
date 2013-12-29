@@ -73,7 +73,7 @@ namespace FancyTraveller.Domain.Logic
                     for (int i = 0; i < neighbourDistances[verticePickedFromQueue].Count; ++i)
                     {
 
-                        verticeNeighbour = neighbourDistances[verticePickedFromQueue][i].DestinationCity.CityId;
+                        verticeNeighbour = neighbourDistances[verticePickedFromQueue][i].DestinationCity.Id;
                         toNeighbourCost = neighbourDistances[verticePickedFromQueue][i].Distance;
 
                         if (listOfDistancesTemp[verticeNeighbour] > listOfDistancesTemp[verticePickedFromQueue] + toNeighbourCost)
