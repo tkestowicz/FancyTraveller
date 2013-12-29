@@ -2,7 +2,7 @@
     angular.bootstrap(document.getElementsByTagName("body"), ['fancyTraveller']);
 }
 
-var app = angular.module('fancyTraveller', ['ui.bootstrap', 'ui.map']);
+var app = angular.module('fancyTraveller', ['ui.bootstrap', 'ui.map', 'ui.event']);
 
 app.controller('suggestingCities', function ($scope, citiesRepository) {
     $scope.selected = undefined;
@@ -13,10 +13,30 @@ app.controller('suggestingCities', function ($scope, citiesRepository) {
 });
 
 app.controller('map', ['$scope', function ($scope) {
+    var p1 = new google.maps.LatLng(51.51121389999999, -0.1198244);
+    var p2 = new google.maps.LatLng(45.764043, 4.835659);
     $scope.mapOptions = {
-        center: new google.maps.LatLng(35.784, -78.670),
-        zoom: 15,
+        center: p1,
+        zoom: 4,
         mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    $scope.onMapIdle = function () {
+        if ($scope.myMarkers === undefined) {
+            var marker = new google.maps.Marker({
+                map: $scope.mapWithTheRoute,
+                position: p1
+            });
+            var marker2 = new google.maps.Marker({
+                map: $scope.mapWithTheRoute,
+                position: p2
+            });
+            $scope.myMarkers = [marker, marker2, ];
+        }
+    };
+
+    $scope.markerClicked = function (m) {
+        window.alert("clicked");
     };
 }]);
 

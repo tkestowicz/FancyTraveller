@@ -81,7 +81,12 @@
         </div>
         <div class="panel-body">
             <section id="map" ng-controller="map">
-                <div ui-map="mapWithTheRoute" ui-options="mapOptions" class="map-canvas"></div>
+                <div id="map_canvas" ui-map="mapWithTheRoute" ui-options="mapOptions" ui-event="{'map-idle' : 'onMapIdle()'}" class="map-canvas">
+
+                </div>
+                <div ng-repeat="marker in myMarkers" ui-map-marker="myMarkers[$index]"
+                        ui-event="{'map-click': 'markerClicked(marker)'}">
+                </div>
             </section>
         </div>
     </section>
