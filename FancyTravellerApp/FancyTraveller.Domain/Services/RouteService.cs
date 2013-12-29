@@ -56,7 +56,22 @@ namespace FancyTraveller.Domain.Services
 
         public IEnumerable<IEnumerable<Vertex>> LoadDistancesBetweenCities()
         {
-            throw new NotImplementedException();
+            var listOfAllNeighboursDistances = new List<List<Vertex>>();
+            var dataFromCitiesFile = vertexRepository.GetAll();
+            
+
+            listOfAllNeighboursDistances.Add(new List<Vertex>());
+            var zeroVertex = new Vertex() { SourceCity = new City() { CityId = 0, Name = "0" }, DestinationCity = new City() { CityId = 0, Name = "0" }, Distance = 0 };
+            listOfAllNeighboursDistances[0].Add(zeroVertex);
+
+            foreach (var d in dataFromCitiesFile)
+            {
+                listOfAllNeighboursDistances.Add(new List<Vertex>());
+                var nextVertex = new Vertex() { SourceCity = new City() { CityId = d.SourceCity.CityId, Name = d.SourceCity.Name }, DestinationCity = new City() { CityId = d.DestinationCity.CityId, Name = d.DestinationCity.Name }, Distance = d.Distance };
+                listOfAllNeighboursDistances[d.SourceCity.CityId].Add(nextVertex);
+            }
+
+            return listOfAllNeighboursDistances;
         }
 
         private IEnumerable<Vertex> VerticesWithoutCititesToSkip(IEnumerable<string> citiesToSkip)
