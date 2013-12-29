@@ -15,6 +15,7 @@ app.controller('suggestingCities', function ($scope, citiesRepository) {
 app.controller('map', ['$scope', function ($scope) {
     var p1 = new google.maps.LatLng(51.51121389999999, -0.1198244);
     var p2 = new google.maps.LatLng(45.764043, 4.835659);
+
     $scope.mapOptions = {
         center: p1,
         zoom: 4,
@@ -32,13 +33,27 @@ app.controller('map', ['$scope', function ($scope) {
                 position: p2
             });
             $scope.myMarkers = [marker, marker2, ];
+
+            var line = new google.maps.Polyline({
+                path: [p1, p2],
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.3,
+                strokeWeight: 10,
+                map: $scope.mapWithTheRoute
+            });
         }
     };
 
-    $scope.markerClicked = function (m) {
-        window.alert("clicked");
+    $scope.markerClicked = function (marker) {
+        $scope.currentMarker = marker;
+        $scope.currentMarkerLat = marker.getPosition().lat();
+        $scope.currentMarkerLng = marker.getPosition().lng();
     };
+
+    
 }]);
+
+
 
 app.factory('citiesRepository', function citiesRepository($http) {
 
