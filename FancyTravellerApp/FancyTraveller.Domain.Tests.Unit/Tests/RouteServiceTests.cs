@@ -30,32 +30,32 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
         {
             const int source = 1;
             const int destination = 2;
-            int numberOfCities = 4;
+            const int numberOfCities = 4;
             var preparedData = new List<Vertex>()
             {
-                new Vertex(){ SourceCity = new City(){ CityId = 1, Name = "Amsterdam" }, DestinationCity = new City(){ CityId = 2, Name = "Wroclaw"}, Distance = 1200},
-                new Vertex(){ SourceCity = new City(){ CityId = 2, Name = "Wroclaw" }, DestinationCity = new City(){ CityId = 1, Name = "Amsterdam"}, Distance = 1200},
-                new Vertex(){ SourceCity = new City(){ CityId = 1, Name = "Amsterdam" }, DestinationCity = new City(){ CityId = 3, Name = "Hannover"}, Distance = 450},
-                new Vertex(){ SourceCity = new City(){ CityId = 3, Name = "Hannover" }, DestinationCity = new City(){ CityId = 1, Name = "Amsterdam"}, Distance = 450},
-                new Vertex(){ SourceCity = new City(){ CityId = 3, Name = "Hannover" }, DestinationCity = new City(){ CityId = 2, Name = "Wroclaw"}, Distance = 500},
-                new Vertex(){ SourceCity = new City(){ CityId = 2, Name = "Wroclaw" }, DestinationCity = new City(){ CityId = 3, Name = "Hannover"}, Distance = 500},
-                new Vertex(){ SourceCity = new City(){ CityId = 1, Name = "Amsterdam" }, DestinationCity = new City(){ CityId = 4, Name = "Berlin"}, Distance = 900},
-                new Vertex(){ SourceCity = new City(){ CityId = 4, Name = "Berlin" }, DestinationCity = new City(){ CityId = 1, Name = "Amsterdam"}, Distance = 900},
-                new Vertex(){ SourceCity = new City(){ CityId = 4, Name = "Berlin" }, DestinationCity = new City(){ CityId = 2, Name = "Wroclaw"}, Distance = 350},
-                new Vertex(){ SourceCity = new City(){ CityId = 2, Name = "Wroclaw" }, DestinationCity = new City(){ CityId = 4, Name = "Berlin"}, Distance = 350}
+                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 1200},
+                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 1200},
+                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 3, Name = "Hannover"}, Distance = 450},
+                new Vertex(){ SourceCity = new City(){ Id = 3, Name = "Hannover" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 450},
+                new Vertex(){ SourceCity = new City(){ Id = 3, Name = "Hannover" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 500},
+                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 3, Name = "Hannover"}, Distance = 500},
+                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 4, Name = "Berlin"}, Distance = 900},
+                new Vertex(){ SourceCity = new City(){ Id = 4, Name = "Berlin" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 900},
+                new Vertex(){ SourceCity = new City(){ Id = 4, Name = "Berlin" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 350},
+                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 4, Name = "Berlin"}, Distance = 350}
             };
 
             var listOfNeighboursDistance = new List<List<Vertex>>();
 
             listOfNeighboursDistance.Add(new List<Vertex>());
-            var zeroVertex = new Vertex() { SourceCity = new City(){ CityId = 0, Name = "0" }, DestinationCity = new City(){ CityId = 0, Name = "0"}, Distance = 0};
+            var zeroVertex = new Vertex() { SourceCity = new City(){ Id = 0, Name = "0" }, DestinationCity = new City(){ Id = 0, Name = "0"}, Distance = 0};
             listOfNeighboursDistance[0].Add(zeroVertex);
             
             foreach(var p in preparedData)
             {
                 listOfNeighboursDistance.Add(new List<Vertex>());
-                var nextVertex = new Vertex() { SourceCity = new City(){ CityId = p.SourceCity.CityId, Name = p.SourceCity.Name }, DestinationCity = new City(){ CityId = p.DestinationCity.CityId, Name = p.DestinationCity.Name}, Distance = p.Distance};
-                listOfNeighboursDistance[p.SourceCity.CityId].Add(nextVertex);
+                var nextVertex = new Vertex() { SourceCity = new City(){ Id = p.SourceCity.Id, Name = p.SourceCity.Name }, DestinationCity = new City(){ Id = p.DestinationCity.Id, Name = p.DestinationCity.Name}, Distance = p.Distance};
+                listOfNeighboursDistance[p.SourceCity.Id].Add(nextVertex);
             }
           
             var noCititesToSkip = Enumerable.Empty<string>();

@@ -149,14 +149,17 @@ var fancyParser = function(gMaps)
 
 	function parseDistanceBetweenCities(indexOfSourceCity, indexOfDestinationCity)
 	{
+		var prepareId = function(index){ return parseInt(index) + 1; }
 		var indexOfNameElement = 0;
 		var distanceBetweenCities = {};
 
 		distanceBetweenCities.sourceCity = {};
 		distanceBetweenCities.destinationCity = {};
 
+		distanceBetweenCities.sourceCity.id = prepareId(indexOfSourceCity);
 		distanceBetweenCities.sourceCity.name = citiesToParse[indexOfSourceCity][indexOfNameElement];
 		distanceBetweenCities.sourceCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.sourceCity.name);
+		distanceBetweenCities.destinationCity.id = prepareId(indexOfDestinationCity);
 		distanceBetweenCities.destinationCity.name = citiesToParse[indexOfDestinationCity][indexOfNameElement];
 		distanceBetweenCities.destinationCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.destinationCity.name);
 		distanceBetweenCities.distance = citiesToParse[indexOfDestinationCity][1][indexOfSourceCity];
@@ -184,6 +187,9 @@ var fancyParser = function(gMaps)
 
 		for(var indexOfTheCity in citiesToParse)
 		{
+			// just to reduce the data returned by a half 
+			if(indexOfTheCity % 2 == 0) continue;
+
 			// last element already has connections to all other cities
 			if(indexOfTheCity == citiesToParse.length - 1)
 				break;
