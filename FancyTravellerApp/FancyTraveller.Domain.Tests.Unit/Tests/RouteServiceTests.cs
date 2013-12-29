@@ -39,10 +39,10 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
                 new Vertex(){ SourceCity = new City(){ Id = 3, Name = "Hannover" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 450},
                 new Vertex(){ SourceCity = new City(){ Id = 3, Name = "Hannover" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 500},
                 new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 3, Name = "Hannover"}, Distance = 500},
-                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 4, Name = "Berlin"}, Distance = 900},
-                new Vertex(){ SourceCity = new City(){ Id = 4, Name = "Berlin" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 900},
-                new Vertex(){ SourceCity = new City(){ Id = 4, Name = "Berlin" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 350},
-                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 4, Name = "Berlin"}, Distance = 350}
+                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 40, Name = "Berlin"}, Distance = 900},
+                new Vertex(){ SourceCity = new City(){ Id = 40, Name = "Berlin" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 900},
+                new Vertex(){ SourceCity = new City(){ Id = 40, Name = "Berlin" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 350},
+                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 40, Name = "Berlin"}, Distance = 350}
             };
 
             var listOfNeighboursDistance = new List<List<Vertex>>();

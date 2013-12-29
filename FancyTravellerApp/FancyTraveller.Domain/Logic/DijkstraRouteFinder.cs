@@ -56,10 +56,23 @@ namespace FancyTraveller.Domain.Logic
         public int FindShortestRoute(int sourceTop, int destinationTop, int allVertices, IEnumerable<IEnumerable<Vertex>> vertices)
         {
             List<List<Vertex>> neighbourDistances = vertices as List<List<Vertex>>;
-            for (int i = 0; i < allVertices; ++i)
+
+            var allCities = new List<int>();
+            
+            foreach (var n in neighbourDistances)
             {
-                listOfDistancesTemp.Add(i, double.PositiveInfinity);
-                allVerticesQueue.Enqueue(i);
+                var destinationCity = n.Select(x => x.DestinationCity.Id).FirstOrDefault();
+                var sourceCity = n.Select(x => x.SourceCity.Id).FirstOrDefault();
+                allCities.Add(destinationCity);
+                allCities.Add(sourceCity);
+            }
+
+            allCities = allCities.Distinct().ToList();
+
+            foreach(var c in allCities)
+            {
+                listOfDistancesTemp.Add(c, double.PositiveInfinity);
+                allVerticesQueue.Enqueue(c);
             }
 
             listOfDistancesTemp[sourceTop] = 0;
