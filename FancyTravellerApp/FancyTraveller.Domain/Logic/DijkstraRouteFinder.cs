@@ -11,19 +11,58 @@ namespace FancyTraveller.Domain.Logic
         private int toNeighbourCost;
         private int verticePickedFromQueue;
         private List<double> listOfDistances = new List<double>();
+        private Dictionary<double, double> listOfDistancesTemp = new Dictionary<double, double>();
         private Queue<int> allVerticesQueue = new Queue<int>();
+
+        //public int FindShortestRoute(int sourceTop, int destinationTop, int allVertices, IEnumerable<IEnumerable<Vertex>> vertices)
+        //{
+        //    List<List<Vertex>> neighbourDistances = vertices as List<List<Vertex>>;
+        //    for (int i = 0; i < allVertices; ++i)
+        //    {
+        //        listOfDistances.Add(i);
+        //        listOfDistances[i] = double.PositiveInfinity;
+        //        allVerticesQueue.Enqueue(i);
+        //    }
+
+        //    listOfDistances[sourceTop] = 0;
+
+        //    do
+        //    {
+        //        verticePickedFromQueue = allVerticesQueue.Peek();
+
+        //        if (verticePickedFromQueue != 0)
+        //        {
+        //            for (int i = 0; i < neighbourDistances[verticePickedFromQueue].Count; ++i)
+        //            {
+
+        //                verticeNeighbour = neighbourDistances[verticePickedFromQueue][i].DestinationCity.CityId;
+        //                toNeighbourCost = neighbourDistances[verticePickedFromQueue][i].Distance;
+
+        //                if (listOfDistances[verticeNeighbour] > listOfDistances[verticePickedFromQueue] + toNeighbourCost)
+        //                {
+        //                    listOfDistances[verticeNeighbour] = listOfDistances[verticePickedFromQueue] + toNeighbourCost;
+        //                    allVerticesQueue.Enqueue(verticeNeighbour);
+        //                }
+        //            }
+        //        }
+
+        //        allVerticesQueue.Dequeue();
+
+        //    } while (allVerticesQueue.Count > 0);
+
+        //    return Convert.ToInt32(listOfDistances[destinationTop]);
+        //}
 
         public int FindShortestRoute(int sourceTop, int destinationTop, int allVertices, IEnumerable<IEnumerable<Vertex>> vertices)
         {
             List<List<Vertex>> neighbourDistances = vertices as List<List<Vertex>>;
             for (int i = 0; i < allVertices; ++i)
             {
-                listOfDistances.Add(i);
-                listOfDistances[i] = double.PositiveInfinity;
+                listOfDistancesTemp.Add(i, double.PositiveInfinity);
                 allVerticesQueue.Enqueue(i);
             }
 
-            listOfDistances[sourceTop] = 0;
+            listOfDistancesTemp[sourceTop] = 0;
 
             do
             {
@@ -37,9 +76,9 @@ namespace FancyTraveller.Domain.Logic
                         verticeNeighbour = neighbourDistances[verticePickedFromQueue][i].DestinationCity.CityId;
                         toNeighbourCost = neighbourDistances[verticePickedFromQueue][i].Distance;
 
-                        if (listOfDistances[verticeNeighbour] > listOfDistances[verticePickedFromQueue] + toNeighbourCost)
+                        if (listOfDistancesTemp[verticeNeighbour] > listOfDistancesTemp[verticePickedFromQueue] + toNeighbourCost)
                         {
-                            listOfDistances[verticeNeighbour] = listOfDistances[verticePickedFromQueue] + toNeighbourCost;
+                            listOfDistancesTemp[verticeNeighbour] = listOfDistancesTemp[verticePickedFromQueue] + toNeighbourCost;
                             allVerticesQueue.Enqueue(verticeNeighbour);
                         }
                     }
@@ -49,46 +88,8 @@ namespace FancyTraveller.Domain.Logic
 
             } while (allVerticesQueue.Count > 0);
 
-            return Convert.ToInt32(listOfDistances[destinationTop]);
+            return Convert.ToInt32(listOfDistancesTemp[destinationTop]);
         }
-
-        //private string FindShortestPath(int sourceTop, int allVertices, List<List<Tuple<int, int>>> listOfNeighboursDistance, int destinationTop)
-        //{
-        //for (int i = 0; i < allVertices; ++i)
-        //{
-        //    listOfDistances.Add(i);
-        //    listOfDistances[i] = double.PositiveInfinity;
-        //    allVerticesQueue.Enqueue(i);
-        //}
-
-        //listOfDistances[sourceTop] = 0;
-
-        //do
-        //{
-        //    verticePickedFromQueue = allVerticesQueue.Peek();
-
-        //    if (verticePickedFromQueue != 0)
-        //    {
-        //        for (int i = 0; i < listOfNeighboursDistance[verticePickedFromQueue].Count; ++i)
-        //        {
-
-        //            verticeNeighbour = listOfNeighboursDistance[verticePickedFromQueue][i].Item1;
-        //            toNeighbourCost = listOfNeighboursDistance[verticePickedFromQueue][i].Item2;
-
-        //            if (listOfDistances[verticeNeighbour] > listOfDistances[verticePickedFromQueue] + toNeighbourCost)
-        //            {
-        //                listOfDistances[verticeNeighbour] = listOfDistances[verticePickedFromQueue] + toNeighbourCost;
-        //                allVerticesQueue.Enqueue(verticeNeighbour);
-        //            }
-        //        }
-        //    }
-
-        //    allVerticesQueue.Dequeue();
-
-        //} while (allVerticesQueue.Count > 0);
-
-        //return "Shortest road from " + sourceTop + " to " + destinationTop + " is: " + listOfDistances[destinationTop].ToString() + " km";
-        //}
 
     }
 }
