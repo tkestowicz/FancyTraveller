@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\RouteController.cs" />
+    <Compile Include="Controllers\WebsiteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -123,6 +124,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\ext\boostrap-3.0.2.min.css" />
     <Content Include="Content\ext\bootstrap-theme-flatty-3.0.3.min.css" />
+    <Content Include="Content\favicon.ico" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
@@ -145,6 +147,7 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\fancyTravellerApp.js" />
     <Content Include="Scripts\i18n\angular-locale_af-na.js" />
     <Content Include="Scripts\i18n\angular-locale_af-za.js" />
     <Content Include="Scripts\i18n\angular-locale_af.js" />
@@ -396,10 +399,8 @@
     <Content Include="Scripts\ui-bootstrap-tpls-0.6.0.min.js" />
     <Content Include="Scripts\ui-map\event.js" />
     <Content Include="Scripts\ui-map\ui-map.js" />
-    <Content Include="UI-Mockup\fancy-traveler.html" />
-    <Content Include="UI-Mockup\favicon.ico" />
-    <Content Include="UI-Mockup\template\typeahead\typeahead-match.html" />
-    <Content Include="UI-Mockup\template\typeahead\typeahead-popup.html" />
+    <Content Include="template\typeahead\typeahead-match.html" />
+    <Content Include="template\typeahead\typeahead-popup.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -409,7 +410,9 @@
     </Content>
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Website\Index.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

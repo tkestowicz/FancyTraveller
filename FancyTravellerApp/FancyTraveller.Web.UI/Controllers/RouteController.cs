@@ -20,7 +20,7 @@ namespace FancyTraveller.Web.UI.Controllers
             service = new RouteService(new VerticesRepository(ConfigurationManager.AppSettings, new ServerFileReader()), new DijkstraRouteFinder());
         }
         
-        [ActionName("AvailableCitites")]
+        [ActionName("AvailableCities")]
         public IEnumerable<AvailableCityResponse> GetAvailableCities()
         {
             return service.AvailableCities.Select(c => new AvailableCityResponse(){ Name = c });
