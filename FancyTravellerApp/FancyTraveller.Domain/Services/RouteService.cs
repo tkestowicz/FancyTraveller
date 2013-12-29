@@ -61,14 +61,14 @@ namespace FancyTraveller.Domain.Services
             
 
             listOfAllNeighboursDistances.Add(new List<Vertex>());
-            var zeroVertex = new Vertex() { SourceCity = new City() { CityId = 0, Name = "0" }, DestinationCity = new City() { CityId = 0, Name = "0" }, Distance = 0 };
+            var zeroVertex = new Vertex() { SourceCity = new City() { Id = 0, Name = "0" }, DestinationCity = new City() { Id = 0, Name = "0" }, Distance = 0 };
             listOfAllNeighboursDistances[0].Add(zeroVertex);
 
             foreach (var d in dataFromCitiesFile)
             {
                 listOfAllNeighboursDistances.Add(new List<Vertex>());
-                var nextVertex = new Vertex() { SourceCity = new City() { CityId = d.SourceCity.CityId, Name = d.SourceCity.Name }, DestinationCity = new City() { CityId = d.DestinationCity.CityId, Name = d.DestinationCity.Name }, Distance = d.Distance };
-                listOfAllNeighboursDistances[d.SourceCity.CityId].Add(nextVertex);
+                var nextVertex = new Vertex() { SourceCity = new City() { Id = d.SourceCity.Id, Name = d.SourceCity.Name }, DestinationCity = new City() { Id = d.DestinationCity.Id, Name = d.DestinationCity.Name }, Distance = d.Distance };
+                listOfAllNeighboursDistances[d.SourceCity.Id].Add(nextVertex);
             }
 
             return listOfAllNeighboursDistances;
