@@ -54,6 +54,11 @@ namespace FancyTraveller.Domain.Services
             return vertex.DestinationCity.Location;
         }
 
+        public IEnumerable<IEnumerable<Vertex>> LoadDistancesBetweenCities()
+        {
+            throw new NotImplementedException();
+        }
+
         private IEnumerable<Vertex> VerticesWithoutCititesToSkip(IEnumerable<string> citiesToSkip)
         {
             return
