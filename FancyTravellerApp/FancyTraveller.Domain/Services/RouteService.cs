@@ -28,17 +28,9 @@ namespace FancyTraveller.Domain.Services
             }
         }
 
-        public IEnumerable<Vertex> DistancesBetweenCitites(IEnumerable<string> listOfCititesToSkip)
+        public int FindShortestRoute(int source, int destination, int numberOfAllVertices, IDictionary<int, IList<Vertex>> vertices)
         {
-            if (listOfCititesToSkip == null || !listOfCititesToSkip.Any())
-                return vertexRepository.GetAll();
-            
-            return VerticesWithoutCititesToSkip(listOfCititesToSkip);
-        }
-
-        public int FindShortestRoute(int source, int destination, int numberOfAllVertices, IEnumerable<IEnumerable<Vertex>> vertices/*IEnumerable<string> cititesToSkip*/)
-        {
-            return routeFinder.FindShortestRoute(source, destination, numberOfAllVertices, vertices/*DistancesBetweenCitites(cititesToSkip)*/);
+            return routeFinder.FindShortestRoute(source, destination, vertices);
         }
 
         public Location GetLocationOf(string city)
@@ -54,24 +46,29 @@ namespace FancyTraveller.Domain.Services
             return vertex.DestinationCity.Location;
         }
 
-        public IEnumerable<IEnumerable<Vertex>> LoadDistancesBetweenCities()
+        public IDictionary<int, IList<Vertex>> LoadDistancesBetweenCities(IList<string> citiesToSkip)
         {
-            var listOfAllNeighboursDistances = new List<List<Vertex>>();
             var dataFromCitiesFile = vertexRepository.GetAll();
-            
-
-            listOfAllNeighboursDistances.Add(new List<Vertex>());
-            var zeroVertex = new Vertex() { SourceCity = new City() { Id = 0, Name = "0" }, DestinationCity = new City() { Id = 0, Name = "0" }, Distance = 0 };
-            listOfAllNeighboursDistances[0].Add(zeroVertex);
+            IDictionary<int, IList<Vertex>> listOfNeighboursDistance = new Dictionary<int, IList<Vertex>>();
 
             foreach (var d in dataFromCitiesFile)
             {
-                listOfAllNeighboursDistances.Add(new List<Vertex>());
+                if(ShouldBeSkipped(d, citiesToSkip)) continue;
+                
                 var nextVertex = new Vertex() { SourceCity = new City() { Id = d.SourceCity.Id, Name = d.SourceCity.Name }, DestinationCity = new City() { Id = d.DestinationCity.Id, Name = d.DestinationCity.Name }, Distance = d.Distance };
-                listOfAllNeighboursDistances[d.SourceCity.Id].Add(nextVertex);
+
+                if (listOfNeighboursDistance.ContainsKey(d.SourceCity.Id))
+                    listOfNeighboursDistance[d.SourceCity.Id].Add(nextVertex);
+                else
+                    listOfNeighboursDistance.Add(d.SourceCity.Id, new List<Vertex>() { nextVertex });
             }
 
-            return listOfAllNeighboursDistances;
+            return listOfNeighboursDistance;
+        }
+
+        private bool ShouldBeSkipped(Vertex vertex, IList<string> citiesToSkip)
+        {
+            return citiesToSkip.Contains(vertex.DestinationCity.Name) || citiesToSkip.Contains(vertex.SourceCity.Name);
         }
 
         private IEnumerable<Vertex> VerticesWithoutCititesToSkip(IEnumerable<string> citiesToSkip)

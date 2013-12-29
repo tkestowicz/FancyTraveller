@@ -1,4 +1,4 @@
-﻿[{"name": "Amsterdam"},{"name": "Antwerp"},{"name": "Athens"},{"name": "Barcelona"},{"name": "Berlin"},
+﻿[{"name": "Antwerp"},{"name": "Athens"},{"name": "Barcelona"},{"name": "Berlin"},
 {"name": "Bern"},{"name": "Brussels"},{"name": "Calais"},{"name": "Cologne"},{"name": "Copenhagen"},
 {"name": "Edinburgh"},{"name": "Frankfurt"},{"name": "Geneva"},{"name": "Genoa"},{"name": "Hamburg"},
 {"name": "Le Havre"},{"name": "Lisbon"},{"name": "London"},{"name": "Luxembourg"},{"name": "Lyon"},

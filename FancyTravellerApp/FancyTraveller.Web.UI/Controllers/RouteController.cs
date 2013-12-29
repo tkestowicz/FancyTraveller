@@ -30,7 +30,7 @@ namespace FancyTraveller.Web.UI.Controllers
         public ShortestRouteResponse FindShortestRoute(ShortestRouteRequest request)
         {
             var numberOfAllCities = service.AvailableCities.Count();
-            var allDistancesBetweenCities = service.LoadDistancesBetweenCities();
+            var allDistancesBetweenCities = service.LoadDistancesBetweenCities(request.CitiesToSkip);
             var result = service.FindShortestRoute(request.SourceCityId, request.DestinationCityId, numberOfAllCities, allDistancesBetweenCities);
 
             return new ShortestRouteResponse()

@@ -1,6 +1,6 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Web.Script.Serialization;
 using FancyTraveller.Domain.Infrastracture;
 using FancyTraveller.Domain.Logic;
 using FancyTraveller.Domain.Model;
@@ -36,9 +36,9 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
         [Test]
         public void get_all_verticies___happy_path_with_no_citites_to_skip___list_of_verticies_is_returned()
         {
-            var noCititesToSkip = Enumerable.Empty<string>();
+            IList<string> noCititesToSkip = new string[0];
 
-            var result = service.DistancesBetweenCitites(noCititesToSkip);
+            var result = service.LoadDistancesBetweenCities(noCititesToSkip);
 
             var expectedListOfVerticies = RouteServiceTestingData.Vertices;
 
@@ -50,7 +50,7 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
         {
             var cititesToSkip = new[] { "Amsterdam", "Madrid", "Turin" };
 
-            var result = service.DistancesBetweenCitites(cititesToSkip);
+            var result = service.LoadDistancesBetweenCities(cititesToSkip);
 
             var allVerticies = RouteServiceTestingData.Vertices;
             var expectedListOfVerticies =
@@ -61,7 +61,7 @@ namespace FancyTraveller.Domain.Tests.Integration.Tests
         }
 
         [TestCase("Madrid", 40.4167754, -3.7037902)]
-        [TestCase("Amsterdam", 52.3702157, 4.895167900000001)]
+        [TestCase("Cologne", 50.937531, 6.9602786)]
         [TestCase("Zurich", 47.3686498, 8.539182499999999)]
         [TestCase("NoExistingLocation", 0, 0)]
         public void get_location___happy_path___location_is_returned(string city, double expectedLatitude, double expectedLongitude)
