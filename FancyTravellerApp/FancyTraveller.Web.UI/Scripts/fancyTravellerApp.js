@@ -5,19 +5,80 @@
 var app = angular.module('fancyTraveller', ['ui.bootstrap', 'ui.map', 'ui.event']);
 
 app.controller('suggestingCities', function ($scope, citiesRepository) {
-    $scope.selected = undefined;
 
     citiesRepository.listOfAvailableCitites().then(function (data) {
         $scope.cities = data;
     });
 });
 
+app.controller('route', function($scope, $http) {
+
+    $scope.query = {
+        sourceCity: undefined,
+        destinationCity: undefined,
+        citiesToSkip: []
+    };
+
+    $scope.result = {
+        show: {
+            map: false,
+            summary: false
+        },
+        positions: {
+            source: undefined,
+            destination: undefined
+        },
+        distance: 0
+    };
+
+    $scope.findRouteFor = function () {
+
+        var shortestPathUrl = '/api/FindShortestRoute/';
+
+        $http.post(shortestPathUrl, $scope.query).then(function(response) {
+
+            $scope.displayResult(response.data);
+
+        }, function(response) {
+            // TODO: error handling
+            console.log(response);
+        });
+    };
+
+    $scope.displayResult = function(result) {
+        $scope.result.show.map = $scope.result.show.summary = true;
+
+        $scope.result.distance = result.Distance;
+
+        $scope.result.positions = {
+            source: new google.maps.LatLng(result.SourceCity.Location.Latitude, result.SourceCity.Location.Longitude),
+            destination: new google.maps.LatLng(result.DestinationCity.Location.Latitude, result.DestinationCity.Location.Longitude)
+        };
+    };
+
+});
+
+app.controller('placesToSkipManagement', function($scope) {
+
+   $scope.removeCityToSkip = function (indexOfTheCity) {
+
+       if ($scope.query.citiesToSkip[indexOfTheCity] !== undefined)
+            $scope.query.citiesToSkip.splice(indexOfTheCity, 1);
+    };
+
+    $scope.addCityToSkip = function (selectedCity) {
+      
+        if ($scope.query.citiesToSkip.indexOf(selectedCity) === -1)
+            $scope.query.citiesToSkip.push(selectedCity);
+
+        document.getElementById('blacklistInput').value = null;
+    };
+});
+
 app.controller('map', ['$scope', function ($scope) {
-    var p1 = new google.maps.LatLng(51.51121389999999, -0.1198244);
-    var p2 = new google.maps.LatLng(45.764043, 4.835659);
 
     $scope.mapOptions = {
-        center: p1,
+        center: $scope.result.positions.source,
         zoom: 4,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -26,16 +87,16 @@ app.controller('map', ['$scope', function ($scope) {
         if ($scope.myMarkers === undefined) {
             var marker = new google.maps.Marker({
                 map: $scope.mapWithTheRoute,
-                position: p1
+                position: $scope.result.positions.source
             });
             var marker2 = new google.maps.Marker({
                 map: $scope.mapWithTheRoute,
-                position: p2
+                position: $scope.result.positions.destination
             });
             $scope.myMarkers = [marker, marker2, ];
 
             var line = new google.maps.Polyline({
-                path: [p1, p2],
+                path: [$scope.result.positions.source, $scope.result.positions.destination],
                 strokeColor: "#FF0000",
                 strokeOpacity: 0.3,
                 strokeWeight: 10,

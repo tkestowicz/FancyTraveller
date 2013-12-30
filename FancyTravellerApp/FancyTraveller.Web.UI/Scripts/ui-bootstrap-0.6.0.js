@@ -3020,7 +3020,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
     link:function (originalScope, element, attrs, modelCtrl) {
 
       //SUPPORTED ATTRIBUTES (OPTIONS)
-
+      
       //minimal no of characters that needs to be entered before typeahead kicks-in
       var minSearch = originalScope.$eval(attrs.typeaheadMinLength) || 1;
 
@@ -3035,6 +3035,10 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
 
       //a callback executed when a match is selected
       var onSelectCallback = $parse(attrs.typeaheadOnSelect);
+
+      // CUSTOM MOD
+      // resets input when value is selected, allows to select multiple options one after another
+      var resetInputOnSelect = originalScope.$eval(attrs.typeaheadResetInputOnSelect) || false;
 
       var inputFormatter = attrs.typeaheadInputFormatter ? $parse(attrs.typeaheadInputFormatter) : undefined;
 
@@ -3139,7 +3143,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
             getMatchesAsync(inputValue);
           }
         }
-
+        
         if (isEditable) {
           return inputValue;
         } else {
@@ -3176,16 +3180,26 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
         var locals = {};
         var model, item;
 
-        locals[parserResult.itemName] = item = scope.matches[activeIdx].model;
-        model = parserResult.modelMapper(originalScope, locals);
-        $setModelValue(originalScope, model);
-        modelCtrl.$setValidity('editable', true);
+        if (resetInputOnSelect) {
+            item = scope.matches[activeIdx].model;
 
-        onSelectCallback(originalScope, {
-          $item: item,
-          $model: model,
-          $label: parserResult.viewMapper(originalScope, locals)
-        });
+            onSelectCallback(originalScope, {
+                $item: item
+            });
+
+        } else {
+            locals[parserResult.itemName] = item = scope.matches[activeIdx].model;
+            model = parserResult.modelMapper(originalScope, locals);
+            $setModelValue(originalScope, model);
+            modelCtrl.$setValidity('editable', true);
+
+            onSelectCallback(originalScope, {
+                $item: item,
+                $model: model,
+                $label: parserResult.viewMapper(originalScope, locals)
+            });
+
+        }
 
         resetMatches();
 

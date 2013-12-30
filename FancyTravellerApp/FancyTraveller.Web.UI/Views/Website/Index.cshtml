@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="~/Content/ext/bootstrap-theme-flatty-3.0.3.min.css">
     <link rel="stylesheet" href="~/Content/Site.css">
 </head>
-<body class="center-block">
+<body class="center-block" ng-controller="route">
     <header>
         <h2>Fancy Traveler</h2>
         <small>Solution for Travelling Salesman Problem implemented as a single page application.</small>
@@ -23,31 +23,32 @@
                     <label for="sourceLocation">Startup city</label>
                     <div class="nav input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
-                        <select class="form-control" id="sourceLocation" ng-model="selected" ng-options="city.Name for city in cities">
+                        <select class="form-control" id="sourceLocation" ng-model="query.sourceCity" ng-options="city.Name for city in cities">
                             <option value="">--Select City--</option>
                         </select>
                     </div>
-                    <p class="text-danger">Startup city is required</p>
+                    @*<p class="text-danger" ng-show="errors.invalidStartup">Startup city is required</p>*@
                 </div>
                 <div class="form-group has-success col-md-5 col-sm-5 col-sm-offset-2 col-md-offset-2" ng-controller="suggestingCities">
                     <label for="destinationLocation">Destination city</label>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-flag"></span></span>
-                        <select class="form-control" id="destinationLocation" ng-model="selected" ng-options="city.Name for city in cities">
+                        <select class="form-control" id="destinationLocation" ng-model="query.destinationCity" ng-options="city.Name for city in cities">
                             <option value="">--Select City--</option>
                         </select>
                     </div>
-                    <p class="text-danger">Destination city is required</p>
+                    @*<p class="text-danger" ng-show="errors.invalidDestination">Destination city is required</p>*@
                 </div>
             </div>
-            <div class="row">
+            <div class="row" ng-controller="placesToSkipManagement">
                 <div class="form-group col-md-12 col-sm-12" ng-controller="suggestingCities">
                     <label for="destinationLocation">Cities to ignore</label>
                     <div class="nav input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-eye-close"></span></span>
-                        <input type="text" class="form-control" id="Text1" placeholder="Enter name of the city you want to exclude from the route and press [Enter]" ng-model="selected" typeahead="city.Name for city in cities | filter:$viewValue | limitTo:10" />
+                        <input type="text" class="form-control" id="blacklistInput" placeholder="Enter name of the city you want to exclude from the route and press [Enter]" 
+                            ng-model="selected" typeahead="city.Name for city in cities | filter:$viewValue | limitTo:10" typeahead-reset-input-on-select="true" typeahead-on-select="addCityToSkip($item)" />
                     </div>
-                    <p class="text-danger">Provided city is not available</p>
+                    @*<p class="text-danger">Provided city is not available</p>*@
                 </div>
                 <div class="row">
                     <div class="panel panel-info correct-alignment">
@@ -55,27 +56,27 @@
                             <h3 class="panel-title">Ignored cities</h3>
                         </div>
                         <div class="panel-body ignoredCities">
-                            <span class="label label-primary">Vienna <a class="glyphicon glyphicon-remove"></a></span>
+                            <span class="label label-primary" ng-repeat="city in citiesToSkip">{{city.Name}} <a class="glyphicon glyphicon-remove" ng-click="removeCityToSkip($index)"></a></span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-12 col-sm-12">
-                    <button class="btn btn-block btn-success">Search for the shortest route <span class="glyphicon glyphicon-road"></span></button>
+                    <button class="btn btn-block btn-success" ng-click="findRouteFor()">Search for the shortest route <span class="glyphicon glyphicon-road"></span></button>
                 </div>
             </div>
         </form>
     </nav>
-    <section class="panel panel-primary">
+    <section class="panel panel-primary" ng-show="result.show.summary">
         <div class="panel-heading">
             <h3 class="panel-title">Search results</h3>
         </div>
         <div class="panel-body">
-            The shortest path between A and B has 100 km.
+            The shortest path between {{query.sourceCity.Name}} and {{query.destinationCity.Name}} has {{result.distance}} km.
         </div>
     </section>
-    <section class="panel panel-primary">
+    <section class="panel panel-primary" ng-show="result.show.map">
         <div class="panel-heading">
             <h3 class="panel-title">Route preview</h3>
         </div>
@@ -100,7 +101,7 @@
         Created by <a href="http://mjedrzejewski.wordpress.com/">Maciej Jędrzejewski</a> and <a href="http://tymoteuszkestowicz.com">Tymoteusz Kęstowicz</a>. Copyright &copy; 2013.
     </footer>
     <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/ui-bootstrap-0.6.0.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/ui-bootstrap-0.6.0.js"></script>
     <script type="text/javascript" src="~/Scripts/ui-map/event.js"></script>
     <script type="text/javascript" src="~/Scripts/ui-map/ui-map.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=onGoogleMapsApiReady"></script>

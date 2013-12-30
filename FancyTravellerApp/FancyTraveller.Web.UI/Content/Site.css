@@ -64,3 +64,7 @@ a {
     background-color: #3498db;
     border-color: #3498db;
 }
+
+.label {
+    margin-right: 10px;
+}

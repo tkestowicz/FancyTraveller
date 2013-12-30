@@ -34,11 +34,19 @@ namespace FancyTraveller.Domain.Logic
                         verticeNeighbour = vertices[verticePickedFromQueue].ElementAt(i).DestinationCity.Id;
 
                         toNeighbourCost = vertices[verticePickedFromQueue].ElementAt(i).Distance;
-
-                        if (listOfDistances[verticeNeighbour] > listOfDistances[verticePickedFromQueue] + toNeighbourCost)
+                        try
                         {
-                            listOfDistances[verticeNeighbour] = listOfDistances[verticePickedFromQueue] + toNeighbourCost;
-                            allVerticesQueue.Enqueue(verticeNeighbour);
+                            if (listOfDistances[verticeNeighbour] >
+                                listOfDistances[verticePickedFromQueue] + toNeighbourCost)
+                            {
+                                listOfDistances[verticeNeighbour] = listOfDistances[verticePickedFromQueue] +
+                                                                    toNeighbourCost;
+                                allVerticesQueue.Enqueue(verticeNeighbour);
+                            }
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            // TODO: Should be fixed ASAP!
                         }
                     }
                 }
