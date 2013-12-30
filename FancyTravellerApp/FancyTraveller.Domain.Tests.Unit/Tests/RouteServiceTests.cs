@@ -61,7 +61,7 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
 
             A.CallTo(() => repositoryMock.GetAll()).Returns(preparedData);
              
-            var result = service.FindShortestRoute(source, destination, numberOfCities + 1, listOfNeighboursDistance);//noCititesToSkip);
+            var result = service.FindShortestRoute(source, destination, listOfNeighboursDistance);//noCititesToSkip);
 
             const int expectedDistance = 950;
 

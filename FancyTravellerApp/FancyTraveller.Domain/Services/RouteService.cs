@@ -11,6 +11,7 @@ namespace FancyTraveller.Domain.Services
     {
         private readonly IVertexRepository vertexRepository;
         private readonly IRouteFinder routeFinder;
+        private IEnumerable<City> availableCitiesNew;
 
         public RouteService(IVertexRepository vertexRepository, IRouteFinder routeFinder)
         {
@@ -28,7 +29,12 @@ namespace FancyTraveller.Domain.Services
             }
         }
 
-        public int FindShortestRoute(int source, int destination, int numberOfAllVertices, IDictionary<int, IList<Vertex>> vertices)
+        public IEnumerable<City> AvailableCitiesNew
+        {
+            get { return vertexRepository.GetAll().Select(vertex => vertex.SourceCity).Distinct(new CityEqualityComparer()); }
+        }
+
+        public int FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices)
         {
             return routeFinder.FindShortestRoute(source, destination, vertices);
         }

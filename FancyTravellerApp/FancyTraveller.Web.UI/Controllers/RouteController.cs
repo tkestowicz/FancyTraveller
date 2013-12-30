@@ -23,29 +23,28 @@ namespace FancyTraveller.Web.UI.Controllers
         [ActionName("AvailableCities")]
         public IEnumerable<AvailableCityResponse> GetAvailableCities()
         {
-            return service.AvailableCities.Select(c => new AvailableCityResponse(){ Name = c });
+            return service.AvailableCitiesNew.Select(c => new AvailableCityResponse() { Name = c.Name, Id = c.Id });
         }
 
         [HttpPost]
         public ShortestRouteResponse FindShortestRoute(ShortestRouteRequest request)
         {
-            var numberOfAllCities = service.AvailableCities.Count();
             var allDistancesBetweenCities = service.LoadDistancesBetweenCities(request.CitiesToSkip);
-            var result = service.FindShortestRoute(request.SourceCityId, request.DestinationCityId, numberOfAllCities, allDistancesBetweenCities);
+            var result = service.FindShortestRoute(request.SourceCity.Id, request.DestinationCity.Id, allDistancesBetweenCities);
 
             return new ShortestRouteResponse()
             {
                 SourceCity = new City()
                 {
-                    Id = request.SourceCityId,
-                    Name = request.SourceCity,
-                    Location = service.GetLocationOf(request.SourceCity)
+                    Id = request.SourceCity.Id,
+                    Name = request.SourceCity.Name,
+                    Location = service.GetLocationOf(request.SourceCity.Name)
                 },
                 DestinationCity = new City()
                 {
-                    Id = request.DestinationCityId,
-                    Name = request.DestinationCity,
-                    Location = service.GetLocationOf(request.DestinationCity)
+                    Id = request.DestinationCity.Id,
+                    Name = request.DestinationCity.Name,
+                    Location = service.GetLocationOf(request.DestinationCity.Name)
                 },
                 Distance = result
             };
