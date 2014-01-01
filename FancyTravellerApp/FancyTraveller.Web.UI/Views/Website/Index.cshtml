@@ -82,18 +82,7 @@
         </div>
         <div class="panel-body">
             <section id="map" ng-controller="map">
-                <div id="map_canvas" ui-map="mapWithTheRoute" ui-options="mapOptions" ui-event="{'map-idle' : 'onMapIdle()'}" class="map-canvas">
-
-                </div>
-                <div ng-repeat="marker in myMarkers" ui-map-marker="myMarkers[$index]"
-                        ui-event="{'map-click': 'markerClicked(marker)'}">
-                </div>
-
-                <div ui-map-info-window="myInfoWindow">
-                <h1>Marker</h1>
-                Lat: <input ng-model="currentMarkerLat">, Lng: <input ng-model="currentMarkerLng">
-                <a ng-click="setMarkerPosition(currentMarker, currentMarkerLat, currentMarkerLng)">Set Position</a>
-                </div>
+                <div id="map_canvas" ui-map="mapWithTheRoute" ui-options="mapOptions" ui-event="{'map-idle' : 'onMapIdle()'}" class="map-canvas" />
             </section>
         </div>
     </section>

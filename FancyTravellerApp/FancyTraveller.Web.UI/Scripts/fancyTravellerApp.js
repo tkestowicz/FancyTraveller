@@ -32,7 +32,7 @@ app.controller('route', function($scope, $http) {
     };
 
     $scope.findRouteFor = function () {
-
+        
         var shortestPathUrl = '/api/FindShortestRoute/';
 
         $http.post(shortestPathUrl, $scope.query).then(function(response) {
@@ -54,8 +54,7 @@ app.controller('route', function($scope, $http) {
             source: new google.maps.LatLng(result.SourceCity.Location.Latitude, result.SourceCity.Location.Longitude),
             destination: new google.maps.LatLng(result.DestinationCity.Location.Latitude, result.DestinationCity.Location.Longitude)
         };
-    };
-
+    };  
 });
 
 app.controller('placesToSkipManagement', function($scope) {
@@ -78,43 +77,41 @@ app.controller('placesToSkipManagement', function($scope) {
 app.controller('map', ['$scope', function ($scope) {
 
     $scope.mapOptions = {
-        center: $scope.result.positions.source,
         zoom: 4,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    $scope.onMapIdle = function () {
-        if ($scope.myMarkers === undefined) {
-            var marker = new google.maps.Marker({
-                map: $scope.mapWithTheRoute,
-                position: $scope.result.positions.source
-            });
-            var marker2 = new google.maps.Marker({
-                map: $scope.mapWithTheRoute,
-                position: $scope.result.positions.destination
-            });
-            $scope.myMarkers = [marker, marker2, ];
+    $scope.$watch("result.show.summary", function (val) {
+        window.setTimeout(function () {
+            google.maps.event.trigger($scope.mapWithTheRoute, 'resize');
+        }, 100);
 
-            var line = new google.maps.Polyline({
-                path: [$scope.result.positions.source, $scope.result.positions.destination],
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.3,
-                strokeWeight: 10,
-                map: $scope.mapWithTheRoute
-            });
-        }
-    };
+        var source = new google.maps.Marker({
+            map: $scope.mapWithTheRoute,
+            position: $scope.result.positions.source
+        });
 
-    $scope.markerClicked = function (marker) {
-        $scope.currentMarker = marker;
-        $scope.currentMarkerLat = marker.getPosition().lat();
-        $scope.currentMarkerLng = marker.getPosition().lng();
-    };
+        var destination = new google.maps.Marker({
+            map: $scope.mapWithTheRoute,
+            position: $scope.result.positions.destination
+        });
 
-    
+        $scope.myMarkers = [source, destination, ];
+
+        var line = new google.maps.Polyline({
+            path: [$scope.result.positions.source, $scope.result.positions.destination],
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.3,
+            strokeWeight: 10,
+            map: $scope.mapWithTheRoute,
+        });
+
+        google.maps.event.trigger($scope.mapWithTheRoute, 'resize');
+        $scope.mapWithTheRoute.setCenter(new google.maps.LatLng(source.position.lat(), source.position.lng()));
+    });  
+
+
 }]);
-
-
 
 app.factory('citiesRepository', function citiesRepository($http) {
 
