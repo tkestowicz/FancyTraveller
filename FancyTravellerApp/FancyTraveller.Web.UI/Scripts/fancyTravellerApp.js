@@ -1,4 +1,7 @@
-﻿function onGoogleMapsApiReady() {
+﻿var markersArray = [];
+var line;
+
+function onGoogleMapsApiReady() {
     angular.bootstrap(document.getElementsByTagName("body"), ['fancyTraveller']);
 }
 
@@ -32,7 +35,8 @@ app.controller('route', function($scope, $http) {
     };
 
     $scope.findRouteFor = function () {
-        
+        $scope.result.show.summary = false;
+
         var shortestPathUrl = '/api/FindShortestRoute/';
 
         $http.post(shortestPathUrl, $scope.query).then(function(response) {
@@ -98,7 +102,7 @@ app.controller('map', ['$scope', function ($scope) {
 
         $scope.myMarkers = [source, destination, ];
 
-        var line = new google.maps.Polyline({
+        line = new google.maps.Polyline({
             path: [$scope.result.positions.source, $scope.result.positions.destination],
             strokeColor: "#FF0000",
             strokeOpacity: 0.3,
@@ -106,6 +110,9 @@ app.controller('map', ['$scope', function ($scope) {
             map: $scope.mapWithTheRoute,
         });
 
+        markersArray.push(source);
+        markersArray.push(destination);
+        
         google.maps.event.trigger($scope.mapWithTheRoute, 'resize');
         $scope.mapWithTheRoute.setCenter(new google.maps.LatLng(source.position.lat(), source.position.lng()));
     });  
