@@ -3,6 +3,7 @@ var line;
 
 function onGoogleMapsApiReady() {
     angular.bootstrap(document.getElementsByTagName("body"), ['fancyTraveller']);
+    line = new google.maps.Polyline({});
 }
 
 var app = angular.module('fancyTraveller', ['ui.bootstrap', 'ui.map', 'ui.event']);
@@ -36,7 +37,7 @@ app.controller('route', function($scope, $http) {
 
     $scope.findRouteFor = function () {
         $scope.result.show.summary = false;
-
+        
         var shortestPathUrl = '/api/FindShortestRoute/';
 
         $http.post(shortestPathUrl, $scope.query).then(function(response) {
@@ -90,6 +91,9 @@ app.controller('map', ['$scope', function ($scope) {
             google.maps.event.trigger($scope.mapWithTheRoute, 'resize');
         }, 100);
 
+        line.setMap(null);
+        clearOverlays();
+
         var source = new google.maps.Marker({
             map: $scope.mapWithTheRoute,
             position: $scope.result.positions.source
@@ -132,3 +136,10 @@ app.factory('citiesRepository', function citiesRepository($http) {
         }
     };
 });
+
+function clearOverlays() {
+    for (var i = 0; i < markersArray.length; i++) {
+        markersArray[i].setMap(null);
+    }
+    markersArray.length = 0;
+}
