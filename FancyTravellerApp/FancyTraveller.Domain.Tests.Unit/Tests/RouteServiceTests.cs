@@ -28,21 +28,23 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
         [Test]
         public void get_shortest_route___with_no_cities_to_skip___shortest_path_is_returned()
         {
-            const int source = 1;
-            const int destination = 2;
+            const int source = 2;
+            const int destination = 32;
             const int numberOfCities = 4;
             var preparedData = new List<Vertex>()
             {
-                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 1200},
-                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 1200},
-                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 3, Name = "Hannover"}, Distance = 450},
-                new Vertex(){ SourceCity = new City(){ Id = 3, Name = "Hannover" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 450},
-                new Vertex(){ SourceCity = new City(){ Id = 3, Name = "Hannover" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 500},
-                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 3, Name = "Hannover"}, Distance = 500},
-                new Vertex(){ SourceCity = new City(){ Id = 1, Name = "Amsterdam" }, DestinationCity = new City(){ Id = 4, Name = "Berlin"}, Distance = 900},
-                new Vertex(){ SourceCity = new City(){ Id = 4, Name = "Berlin" }, DestinationCity = new City(){ Id = 1, Name = "Amsterdam"}, Distance = 900},
-                new Vertex(){ SourceCity = new City(){ Id = 4, Name = "Berlin" }, DestinationCity = new City(){ Id = 2, Name = "Wroclaw"}, Distance = 350},
-                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Wroclaw" }, DestinationCity = new City(){ Id = 4, Name = "Berlin"}, Distance = 350}
+                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Antwerp" }, DestinationCity = new City(){ Id = 8, Name = "Calais"}, Distance = 211},
+                new Vertex(){ SourceCity = new City(){ Id = 8, Name = "Calais" }, DestinationCity = new City(){ Id = 2, Name = "Antwerp"}, Distance = 211},
+                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Antwerp" }, DestinationCity = new City(){ Id = 6, Name = "Bern"}, Distance = 704},
+                new Vertex(){ SourceCity = new City(){ Id = 6, Name = "Bern" }, DestinationCity = new City(){ Id = 2, Name = "Antwerp"}, Distance = 704},
+                new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Antwerp" }, DestinationCity = new City(){ Id = 12, Name = "Frankfurt"}, Distance = 427},
+                new Vertex(){ SourceCity = new City(){ Id = 12, Name = "Frankfurt" }, DestinationCity = new City(){ Id = 2, Name = "Antwerp"}, Distance = 427},
+                new Vertex(){ SourceCity = new City(){ Id = 12, Name = "Frankfurt" }, DestinationCity = new City(){ Id = 32, Name = "Stuttgart"}, Distance = 205},
+                new Vertex(){ SourceCity = new City(){ Id = 32, Name = "Stuttgart" }, DestinationCity = new City(){ Id = 12, Name = "Frankfurt"}, Distance = 205},
+                new Vertex(){ SourceCity = new City(){ Id = 8, Name = "Calais" }, DestinationCity = new City(){ Id = 12, Name = "Frankfurt"}, Distance = 621},
+                new Vertex(){ SourceCity = new City(){ Id = 12, Name = "Frankfurt" }, DestinationCity = new City(){ Id = 8, Name = "Calais"}, Distance = 621},
+                new Vertex(){ SourceCity = new City(){ Id = 12, Name = "Frankfurt" }, DestinationCity = new City(){ Id = 6, Name = "Bern"}, Distance = 424},
+                new Vertex(){ SourceCity = new City(){ Id = 6, Name = "Bern" }, DestinationCity = new City(){ Id = 12, Name = "Frankfurt"}, Distance = 424},
             };
 
             IDictionary<int, IList<Vertex>> listOfNeighboursDistance = new Dictionary<int, IList<Vertex>>();
@@ -63,7 +65,7 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
              
             var result = service.FindShortestRoute(source, destination, listOfNeighboursDistance);//noCititesToSkip);
 
-            const int expectedDistance = 950;
+            const int expectedDistance = 632;
 
             int item = result[result.Count - 1];
             item.ShouldEqual(expectedDistance);
