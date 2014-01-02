@@ -65,7 +65,8 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
 
             const int expectedDistance = 950;
 
-            result.ShouldEqual(expectedDistance);
+            int item = result[result.Count - 1];
+            item.ShouldEqual(expectedDistance);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace FancyTraveller.Web.UI.Controllers
                     Name = request.DestinationCity.Name,
                     Location = service.GetLocationOf(request.DestinationCity.Name)
                 },
-                Distance = result
+                Distance = result[result.Count - 1]
             };
         }
     }

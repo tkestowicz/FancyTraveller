@@ -34,7 +34,7 @@ namespace FancyTraveller.Domain.Services
             get { return vertexRepository.GetAll().Select(vertex => vertex.SourceCity).Distinct(new CityEqualityComparer()); }
         }
 
-        public int FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices)
+        public List<int> FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices)
         {
             return routeFinder.FindShortestRoute(source, destination, vertices);
         }

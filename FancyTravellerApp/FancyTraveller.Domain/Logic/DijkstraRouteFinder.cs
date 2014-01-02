@@ -11,9 +11,10 @@ namespace FancyTraveller.Domain.Logic
         private int toNeighbourCost;
         private int verticePickedFromQueue;
         private readonly Dictionary<int, double> listOfDistances = new Dictionary<int, double>();
+        private readonly List<int> allDataFromFindShortestRoute = new List<int>();
         private readonly Queue<int> allVerticesQueue = new Queue<int>();
 
-        public int FindShortestRoute(int sourceTop, int destinationTop, IDictionary<int, IList<Vertex>> vertices)
+        public List<int> FindShortestRoute(int sourceTop, int destinationTop, IDictionary<int, IList<Vertex>> vertices)
         {
             foreach (var cityId in vertices.Keys)
             {
@@ -42,6 +43,11 @@ namespace FancyTraveller.Domain.Logic
                                 listOfDistances[verticeNeighbour] = listOfDistances[verticePickedFromQueue] +
                                                                     toNeighbourCost;
                                 allVerticesQueue.Enqueue(verticeNeighbour);
+
+                                if (verticePickedFromQueue != sourceTop)
+                                {
+                                    allDataFromFindShortestRoute.Add(verticePickedFromQueue);
+                                }
                             }
                         }
                         catch (KeyNotFoundException)
@@ -55,7 +61,9 @@ namespace FancyTraveller.Domain.Logic
 
             } while (allVerticesQueue.Count > 0);
 
-            return Convert.ToInt32(listOfDistances[destinationTop]);
+            allDataFromFindShortestRoute.Add(Convert.ToInt32(listOfDistances[destinationTop]));
+
+            return allDataFromFindShortestRoute;
         }
 
     }
