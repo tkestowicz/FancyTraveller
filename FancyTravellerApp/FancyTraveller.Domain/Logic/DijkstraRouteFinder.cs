@@ -44,7 +44,7 @@ namespace FancyTraveller.Domain.Logic
                                                                     toNeighbourCost;
                                 allVerticesQueue.Enqueue(verticeNeighbour);
 
-                                if (verticePickedFromQueue != sourceTop)
+                                if (verticePickedFromQueue != sourceTop && verticePickedFromQueue != destinationTop)
                                 {
                                     allDataFromFindShortestRoute.Add(verticePickedFromQueue);
                                 }
