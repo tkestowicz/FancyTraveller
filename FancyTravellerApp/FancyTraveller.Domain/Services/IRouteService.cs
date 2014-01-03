@@ -10,7 +10,7 @@ namespace FancyTraveller.Domain.Services
         //TODO: change tests!!
         IEnumerable<City> AvailableCitiesNew { get; } 
 
-        List<int> FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices);
+        IList<int> FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices);
         IDictionary<int, IList<Vertex>> LoadDistancesBetweenCities(IList<string> citiesToSkip);
         Location GetLocationOf(string city);
     }

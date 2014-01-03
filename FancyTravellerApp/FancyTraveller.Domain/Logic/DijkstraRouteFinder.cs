@@ -14,7 +14,7 @@ namespace FancyTraveller.Domain.Logic
         private readonly List<int> allDataFromFindShortestRoute = new List<int>();
         private readonly Queue<int> allVerticesQueue = new Queue<int>();
 
-        public List<int> FindShortestRoute(int sourceTop, int destinationTop, IDictionary<int, IList<Vertex>> vertices)
+        public IList<int> FindShortestRoute(int sourceTop, int destinationTop, IDictionary<int, IList<Vertex>> vertices)
         {
             foreach (var cityId in vertices.Keys)
             {
