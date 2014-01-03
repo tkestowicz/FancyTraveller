@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using FakeItEasy;
 using FancyTraveller.Domain.Logic;
 using FancyTraveller.Domain.Model;
@@ -30,7 +29,7 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
         {
             const int source = 2;
             const int destination = 32;
-            const int numberOfCities = 4;
+            
             var preparedData = new List<Vertex>()
             {
                 new Vertex(){ SourceCity = new City(){ Id = 2, Name = "Antwerp" }, DestinationCity = new City(){ Id = 8, Name = "Calais"}, Distance = 211},
@@ -58,12 +57,10 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
                 else
                     listOfNeighboursDistance.Add(p.SourceCity.Id, new List<Vertex>() { nextVertex });
             }
-          
-            var noCititesToSkip = Enumerable.Empty<string>();
 
             A.CallTo(() => repositoryMock.GetAll()).Returns(preparedData);
              
-            var result = service.FindShortestRoute(source, destination, listOfNeighboursDistance);//noCititesToSkip);
+            var result = service.FindShortestRoute(source, destination, listOfNeighboursDistance);
 
             const int expectedDistance = 632;
 

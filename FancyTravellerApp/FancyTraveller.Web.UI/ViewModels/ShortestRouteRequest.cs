@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using FancyTraveller.Domain.POCO;
+﻿using FancyTraveller.Domain.POCO;
 
 namespace FancyTraveller.Web.UI.ViewModels
 {
@@ -7,6 +6,6 @@ namespace FancyTraveller.Web.UI.ViewModels
     {
         public City SourceCity { get; set; }
         public City DestinationCity { get; set; }
-        public List<string> CitiesToSkip { get; set; }
+        public int[] CitiesToSkip { get; set; }
     }
 }

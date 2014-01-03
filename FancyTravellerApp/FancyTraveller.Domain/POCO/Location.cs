@@ -18,7 +18,7 @@ namespace FancyTraveller.Domain.POCO
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(Location other)
         {
-            return Latitude == other.Latitude && Longitude == other.Longitude;
+            return other != null && Latitude == other.Latitude && Longitude == other.Longitude;
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Linq;
 using System.Web.Script.Serialization;
 using FancyTraveller.Domain.Infrastracture;
 using FancyTraveller.Domain.POCO;
@@ -11,7 +12,7 @@ namespace FancyTraveller.Domain.Model
     {
         private readonly NameValueCollection appSettings;
         private readonly IDataReader dataReader;
-        private IEnumerable<Vertex> allVertices;
+        private IList<Vertex> allVertices;
 
         private const string DataFileKey = "citiesDataFile";
 
@@ -36,9 +37,9 @@ namespace FancyTraveller.Domain.Model
 
         #region Implementation of IVertexRepository
 
-        public IEnumerable<Vertex> GetAll()
+        public IList<Vertex> GetAll()
         {
-            return allVertices ?? (allVertices = ConvertJsonToEnumerable<Vertex>(ReadJson(appSettings)));
+            return allVertices ?? (allVertices = ConvertJsonToEnumerable<Vertex>(ReadJson(appSettings)).ToList());
         }
 
         #endregion

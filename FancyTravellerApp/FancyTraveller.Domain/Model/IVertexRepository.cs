@@ -5,6 +5,6 @@ namespace FancyTraveller.Domain.Model
 {
     public interface IVertexRepository
     {
-        IEnumerable<Vertex> GetAll();
+        IList<Vertex> GetAll();
     }
 }

@@ -8,27 +8,46 @@ namespace FancyTraveller.Domain.Tests.Integration.TestingData
 {
     public class RouteServiceTestingData
     {
-        public class City
-        {
-            public string Name { get; set; }
-        }
+
+        private static readonly IEnumerable<Vertex> vertices;
 
         static RouteServiceTestingData()
         {
-            var availableCitiesJson = File.ReadAllText("App_Data/availableCities.txt");
             var verticiesJson = File.ReadAllText("App_Data/cities.txt");
 
-            Vertices = DeserializeVerticesJsonToEnumerable(verticiesJson);
-            AvailableCities = DeserializeCitiesJsonToEnumerable(availableCitiesJson);
+            vertices = DeserializeVerticesJsonToEnumerable(verticiesJson);
+            AvailableCities = DeserializeCitiesJsonToList(verticiesJson);
         }
 
-        public static IEnumerable<Vertex> Vertices { get; set; }
-
-        private static IEnumerable<string> DeserializeCitiesJsonToEnumerable(string availableCitiesJson)
+        public static IDictionary<int, IList<Vertex>> Vertices
         {
-            var serializer = new JavaScriptSerializer();
+            get
+            {
+                var result = new Dictionary<int, IList<Vertex>>();
 
-            return serializer.Deserialize<List<City>>(availableCitiesJson).Select(c => c.Name).ToList().OrderBy(s => s);
+                foreach(var vertex in vertices)
+                {
+                    if (result.ContainsKey(vertex.SourceCity.Id) == false)
+                        result.Add(vertex.SourceCity.Id, new List<Vertex>() {vertex});
+                    else
+                        result[vertex.SourceCity.Id].Add(vertex);
+                }
+
+                return result;
+            }
+        }
+
+        private static IList<City> DeserializeCitiesJsonToList(string verticiesJson)
+        {
+            var result = new List<City>();
+
+            foreach (var vertex in DeserializeVerticesJsonToEnumerable(verticiesJson))
+            {
+                if(result.Contains(vertex.SourceCity) == false)
+                    result.Add(vertex.SourceCity);
+            }
+
+            return result.OrderBy(s => s.Name).ToList();
         }
 
         private static IEnumerable<Vertex> DeserializeVerticesJsonToEnumerable(string verticiesJson)
@@ -38,6 +57,6 @@ namespace FancyTraveller.Domain.Tests.Integration.TestingData
             return serializer.Deserialize<List<Vertex>>(verticiesJson).ToList();
         }
 
-        public static IEnumerable<string> AvailableCities { get; private set; }
+        public static IList<City> AvailableCities { get; private set; }
     }
 }

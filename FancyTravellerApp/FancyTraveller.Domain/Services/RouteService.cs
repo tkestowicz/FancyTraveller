@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FancyTraveller.Domain.Logic;
 using FancyTraveller.Domain.Model;
@@ -21,17 +20,9 @@ namespace FancyTraveller.Domain.Services
 
         #region Implementation of IRouteService
 
-        public IEnumerable<string> AvailableCities
+        public IList<City> AvailableCities
         {
-            get
-            {
-                return ReadAllCities(c => c.DestinationCity.Name).Concat(ReadAllCities(c => c.SourceCity.Name)).Distinct().OrderBy(s => s);
-            }
-        }
-
-        public IEnumerable<City> AvailableCitiesNew
-        {
-            get { return vertexRepository.GetAll().Select(vertex => vertex.SourceCity).Distinct(new CityEqualityComparer()); }
+            get { return vertexRepository.GetAll().Select(vertex => vertex.SourceCity).Distinct(new CityEqualityComparer()).ToList(); }
         }
 
         public IList<int> FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices)
@@ -39,20 +30,7 @@ namespace FancyTraveller.Domain.Services
             return routeFinder.FindShortestRoute(source, destination, vertices);
         }
 
-        public Location GetLocationOf(string city)
-        {
-            var vertex = vertexRepository.GetAll().FirstOrDefault(v => v.DestinationCity.Name == city || v.SourceCity.Name == city);
-
-            if(vertex == null)
-                return new Location(){ Latitude = 0, Longitude = 0 };
-
-            if (vertex.SourceCity.Name == city)
-                return vertex.SourceCity.Location;
-
-            return vertex.DestinationCity.Location;
-        }
-
-        public IDictionary<int, IList<Vertex>> LoadDistancesBetweenCities(IList<string> citiesToSkip)
+        public IDictionary<int, IList<Vertex>> LoadDistancesBetweenCities(int[] citiesToSkip)
         {
             var dataFromCitiesFile = vertexRepository.GetAll();
             IDictionary<int, IList<Vertex>> listOfNeighboursDistance = new Dictionary<int, IList<Vertex>>();
@@ -61,33 +39,18 @@ namespace FancyTraveller.Domain.Services
             {
                 if(ShouldBeSkipped(d, citiesToSkip)) continue;
                 
-                var nextVertex = new Vertex() { SourceCity = new City() { Id = d.SourceCity.Id, Name = d.SourceCity.Name }, DestinationCity = new City() { Id = d.DestinationCity.Id, Name = d.DestinationCity.Name }, Distance = d.Distance };
-
                 if (listOfNeighboursDistance.ContainsKey(d.SourceCity.Id))
-                    listOfNeighboursDistance[d.SourceCity.Id].Add(nextVertex);
+                    listOfNeighboursDistance[d.SourceCity.Id].Add(d);
                 else
-                    listOfNeighboursDistance.Add(d.SourceCity.Id, new List<Vertex>() { nextVertex });
+                    listOfNeighboursDistance.Add(d.SourceCity.Id, new List<Vertex>() { d });
             }
 
             return listOfNeighboursDistance;
         }
 
-        private bool ShouldBeSkipped(Vertex vertex, IList<string> citiesToSkip)
+        private bool ShouldBeSkipped(Vertex vertex, int[] citiesToSkip)
         {
-            return citiesToSkip.Contains(vertex.DestinationCity.Name) || citiesToSkip.Contains(vertex.SourceCity.Name);
-        }
-
-        private IEnumerable<Vertex> VerticesWithoutCititesToSkip(IEnumerable<string> citiesToSkip)
-        {
-            return
-                vertexRepository.GetAll()
-                    .Where(v => !citiesToSkip.Contains(v.DestinationCity.Name) && !citiesToSkip.Contains(v.SourceCity.Name))
-                    .Select(v => v);
-        }
-
-        private IEnumerable<string> ReadAllCities(Func<Vertex, string> field)
-        {
-            return vertexRepository.GetAll().Select(field);
+            return citiesToSkip.Contains(vertex.DestinationCity.Id) || citiesToSkip.Contains(vertex.SourceCity.Id);
         }
 
         #endregion
