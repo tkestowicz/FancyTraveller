@@ -3180,16 +3180,18 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
         var locals = {};
         var model, item;
 
-        if (resetInputOnSelect) {
-            item = scope.matches[activeIdx].model;
+        locals[parserResult.itemName] = item = scope.matches[activeIdx].model;
+        model = parserResult.modelMapper(originalScope, locals);
 
+        if (resetInputOnSelect) {
+            
             onSelectCallback(originalScope, {
-                $item: item
+                $item: item,
+                $model: model
             });
 
         } else {
-            locals[parserResult.itemName] = item = scope.matches[activeIdx].model;
-            model = parserResult.modelMapper(originalScope, locals);
+            
             $setModelValue(originalScope, model);
             modelCtrl.$setValidity('editable', true);
 

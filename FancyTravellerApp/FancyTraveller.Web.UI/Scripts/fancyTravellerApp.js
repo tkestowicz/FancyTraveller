@@ -1,9 +1,9 @@
-﻿var markersArray = [];
-var line;
+﻿//var markersArray = [];
+//var line;
 
 function onGoogleMapsApiReady() {
     angular.bootstrap(document.getElementsByTagName("body"), ['fancyTraveller']);
-    line = new google.maps.Polyline({});
+    //line = new google.maps.Polyline({});
 }
 
 var app = angular.module('fancyTraveller', ['ui.bootstrap', 'ui.map', 'ui.event']);
@@ -40,7 +40,22 @@ app.controller('route', function($scope, $http) {
         
         var shortestPathUrl = '/api/FindShortestRoute/';
 
-        $http.post(shortestPathUrl, $scope.query).then(function(response) {
+        var selectCititesIds = function() {
+            var result = [];
+            for (var city in $scope.query.citiesToSkip)
+                if ($scope.query.citiesToSkip.hasOwnProperty(city))
+                    result.push($scope.query.citiesToSkip[city].Id);
+
+            return result;
+        };
+
+        var query = {
+            sourceCity: $scope.query.sourceCity,
+            destinationCity: $scope.query.destinationCity,
+            citiesToSkip: selectCititesIds()
+        };
+        
+        $http.post(shortestPathUrl, query).then(function(response) {
 
             $scope.displayResult(response.data);
 
@@ -80,6 +95,7 @@ app.controller('placesToSkipManagement', function($scope) {
 });
 
 app.controller('map', ['$scope', function ($scope) {
+/*
 
     $scope.mapOptions = {
         zoom: 4,
@@ -90,8 +106,8 @@ app.controller('map', ['$scope', function ($scope) {
         window.setTimeout(function () {
             google.maps.event.trigger($scope.mapWithTheRoute, 'resize');
         }, 100);
-
-        line.setMap(null);
+        // Error - map is undefined
+        //line.setMap(null);
         clearOverlays();
 
         var source = new google.maps.Marker({
@@ -104,9 +120,9 @@ app.controller('map', ['$scope', function ($scope) {
             position: $scope.result.positions.destination
         });
 
-        $scope.myMarkers = [source, destination, ];
+        $scope.myMarkers = [source, destination];
 
-        line = new google.maps.Polyline({
+        var line = new google.maps.Polyline({
             path: [$scope.result.positions.source, $scope.result.positions.destination],
             strokeColor: "#FF0000",
             strokeOpacity: 0.3,
@@ -114,13 +130,14 @@ app.controller('map', ['$scope', function ($scope) {
             map: $scope.mapWithTheRoute,
         });
 
-        markersArray.push(source);
-        markersArray.push(destination);
+        //markersArray.push(source);
+        //markersArray.push(destination);
         
         google.maps.event.trigger($scope.mapWithTheRoute, 'resize');
         $scope.mapWithTheRoute.setCenter(new google.maps.LatLng(source.position.lat(), source.position.lng()));
     });  
 
+*/
 
 }]);
 
@@ -138,8 +155,8 @@ app.factory('citiesRepository', function citiesRepository($http) {
 });
 
 function clearOverlays() {
-    for (var i = 0; i < markersArray.length; i++) {
-        markersArray[i].setMap(null);
-    }
-    markersArray.length = 0;
+    //for (var i = 0; i < markersArray.length; i++) {
+    //    markersArray[i].setMap(null);
+    //}
+    //markersArray.length = 0;
 }
