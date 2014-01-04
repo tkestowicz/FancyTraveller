@@ -17,38 +17,44 @@
         <small>Solution for Travelling Salesman Problem implemented as a single page application.</small>
     </header>
     <nav>
-        <form role="form">
+        <form role="form" name="routeRequestPreparation">
             <div class="row">
                 <div class="form-group col-md-5 col-sm-5" ng-controller="suggestingCities">
                     <label for="sourceLocation">Startup city</label>
                     <div class="nav input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-home"></span></span>
-                        <select class="form-control" id="sourceLocation" ng-model="query.sourceCity" ng-options="city.Name for city in cities">
+                        <select class="form-control" name="sourceLocation" id="sourceLocation" ng-model="query.sourceCity" ng-click="removeCityToSkipById(query.sourceCity.Id)" ng-options="city.Name for city in cities" required different-source-and-location city-to-compare="query.destinationCity" depends-on="routeRequestPreparation.destinationLocation">
                             <option value="">--Select City--</option>
                         </select>
                     </div>
-                    @*<p class="text-danger" ng-show="errors.invalidStartup">Startup city is required</p>*@
+                    <div ng-show="routeRequestPreparation.sourceLocation.$dirty &&  routeRequestPreparation.sourceLocation.$invalid">
+                        <p class="text-danger" ng-show="routeRequestPreparation.sourceLocation.$error.required">Startup city is required.</p>
+                        <p class="text-danger" ng-show="routeRequestPreparation.sourceLocation.$error.differentSourceAndLocation">Startup city has to be different than destination.</p>
+                    </div>
                 </div>
                 <div class="form-group has-success col-md-5 col-sm-5 col-sm-offset-2 col-md-offset-2" ng-controller="suggestingCities">
                     <label for="destinationLocation">Destination city</label>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-flag"></span></span>
-                        <select class="form-control" id="destinationLocation" ng-model="query.destinationCity" ng-options="city.Name for city in cities">
+                        <select class="form-control" name="destinationLocation" id="destinationLocation" ng-model="query.destinationCity" ng-click="removeCityToSkipById(query.destinationCity.Id)" ng-options="city.Name for city in cities" required different-source-and-location city-to-compare="query.sourceCity" depends-on="routeRequestPreparation.sourceLocation">
                             <option value="">--Select City--</option>
                         </select>
                     </div>
-                    @*<p class="text-danger" ng-show="errors.invalidDestination">Destination city is required</p>*@
+                    <div ng-show="routeRequestPreparation.destinationLocation.$dirty &&  routeRequestPreparation.destinationLocation.$invalid">
+                        <p class="text-danger" ng-show="routeRequestPreparation.destinationLocation.$error.required">Destination city is required.</p>
+                        <p class="text-danger" ng-show="routeRequestPreparation.destinationLocation.$error.differentSourceAndLocation">Destination city has to be different than startup.</p>
+                    </div>
                 </div>
             </div>
             <div class="row" ng-controller="placesToSkipManagement">
                 <div class="form-group col-md-12 col-sm-12" ng-controller="suggestingCities">
-                    <label for="destinationLocation">Cities to ignore</label>
+                    <label for="destinationLocation">Cities to skip</label>
                     <div class="nav input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-eye-close"></span></span>
-                        <input type="text" class="form-control" id="blacklistInput" placeholder="Enter name of the city you want to exclude from the route and press [Enter]" 
-                            ng-model="selected" typeahead="city.Name for city in cities | filter:$viewValue | limitTo:10" typeahead-reset-input-on-select="true" typeahead-on-select="addCityToSkip($item)" />
+                        <input type="text" class="form-control" id="blacklistInput" name="citiesBlacklist" placeholder="Enter name of the city you want to exclude from the route and press [Enter]"
+                            ng-model="selected" typeahead="city.Name for city in cities | filter:$viewValue | limitTo:10" typeahead-reset-input-on-select="true" typeahead-on-select="addCityToSkip($item, routeRequestPreparation.citiesBlacklist)"  />
                     </div>
-                    @*<p class="text-danger">Provided city is not available</p>*@
+                    <p class="text-danger" ng-show="routeRequestPreparation.citiesBlacklist.$error.blacklist">Excluding city selected as start or destination point is not allowed.</p>
                 </div>
                 <div class="row">
                     <div class="panel panel-info correct-alignment">
@@ -56,14 +62,14 @@
                             <h3 class="panel-title">Ignored cities</h3>
                         </div>
                         <div class="panel-body ignoredCities">
-                            <span class="label label-primary" ng-repeat="city in query.citiesToSkip">{{city.Name}} <a class="glyphicon glyphicon-remove" ng-click="removeCityToSkip($index)"></a></span>
+                            <span class="label label-primary" ng-repeat="city in query.citiesToSkip">{{city.Name}} <a class="glyphicon glyphicon-remove" ng-click="removeCityToSkipByIndex($index)"></a></span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-12 col-sm-12">
-                    <button class="btn btn-block btn-success" ng-click="findRouteFor()">Search for the shortest route <span class="glyphicon glyphicon-road"></span></button>
+                    <button class="btn btn-block btn-success" ng-click="findRouteFor()" ng-disabled="routeRequestPreparation.$invalid">Search for the shortest route <span class="glyphicon glyphicon-road"></span></button>
                 </div>
             </div>
         </form>

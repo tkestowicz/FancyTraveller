@@ -66,21 +66,37 @@ app.controller('route', function($scope, $http, routeService) {
         };
 
         $scope.result.visitedCities = result.VisitedCities;
-    };  
+    };
+
+    $scope.removeCityToSkipById = function (cityId) {
+        for (var index in $scope.query.citiesToSkip)
+            if ($scope.query.citiesToSkip[index] !== undefined && $scope.query.citiesToSkip[index].Id === cityId)
+                $scope.query.citiesToSkip.splice(index, 1);
+    };
 });
 
 app.controller('placesToSkipManagement', function($scope) {
 
-   $scope.removeCityToSkip = function (indexOfTheCity) {
+   $scope.removeCityToSkipByIndex = function (indexOfTheCity) {
 
        if ($scope.query.citiesToSkip[indexOfTheCity] !== undefined)
             $scope.query.citiesToSkip.splice(indexOfTheCity, 1);
-    };
+   };
 
-    $scope.addCityToSkip = function (selectedCity) {
-      
-        if ($scope.query.citiesToSkip.indexOf(selectedCity) === -1)
-            $scope.query.citiesToSkip.push(selectedCity);
+    $scope.addCityToSkip = function (selectedCity, ctrl) {
+
+        var isValid = function (city) {
+            var source = $scope.query.sourceCity || {};
+            var destination = $scope.query.destinationCity || {};
+
+            return (source.Name !== city.Name && destination.Name !== city.Name);
+        };
+
+        var valid = isValid(selectedCity);
+        ctrl.$setValidity('blacklist', valid);
+
+        if (valid && $scope.query.citiesToSkip.indexOf(selectedCity) === -1)
+                $scope.query.citiesToSkip.push(selectedCity);
 
         document.getElementById('blacklistInput').value = null;
     };
@@ -160,6 +176,48 @@ app.factory('routeService', function ($http) {
                 // TODO: error handling
                 console.log(response);
             });
+        }
+    };
+});
+
+app.directive('differentSourceAndLocation', function () {
+    return {
+        // restrict to an attribute type.
+        restrict: 'A',
+
+        // element must have ng-model attribute.
+        require: 'ngModel',
+
+        // scope = the parent scope
+        // elem = the element the directive is on
+        // attr = a dictionary of attributes on the element
+        // ctrl = the controller for ngModel.
+        link: function (scope, elem, attr, ctrl) {
+
+            var compareCities = function(source, destination) {
+                return JSON.stringify(source) !== JSON.stringify(destination);
+            };
+
+            var validation = function(value) {
+                // test and set the validity after update.
+                var valid = compareCities(value, scope.$eval(attr.cityToCompare));
+                ctrl.$setValidity('differentSourceAndLocation', valid);
+
+                if (valid)
+                    scope.$eval(attr.dependsOn).$setValidity('differentSourceAndLocation', valid);
+
+                // if it's valid, return the value to the model, 
+                // otherwise return undefined.
+                return value;
+            };
+
+           // add a parser that will process each time the value is 
+            // parsed into the model when the user updates it.
+            ctrl.$parsers.unshift(validation);
+
+            // add a formatter that will process each time the value 
+            // is updated on the DOM element.
+            ctrl.$formatters.unshift(validation);
         }
     };
 });
