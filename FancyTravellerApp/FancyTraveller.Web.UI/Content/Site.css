@@ -68,3 +68,8 @@ a {
 .label {
     margin-right: 10px;
 }
+
+.loader {
+    width: 90%;
+    color: white;
+}

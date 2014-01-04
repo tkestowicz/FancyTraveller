@@ -6,12 +6,23 @@ var app = angular.module('fancyTraveller', ['ui.bootstrap', 'ui.map', 'ui.event'
 
 app.controller('suggestingCities', function ($scope, routeService) {
 
-    routeService.listOfAvailableCitites().then(function (data) {
-        $scope.cities = data;
-    });
+    routeService.listOfAvailableCitites().then(function (response) {
+        $scope.cities = response.data;
+    }, $scope.handleInternalError);
 });
 
 app.controller('route', function($scope, $http, routeService) {
+
+    $scope.loader = $scope.disabledSendBtn = $scope.internalError = false;
+
+    $scope.block = function() {
+        $scope.loader = $scope.disabledSendBtn = true;
+    };
+
+    $scope.unblock = function() {
+        $scope.loader = false;
+        $scope.disabledSendBtn = undefined;
+    };
 
     $scope.query = {
         sourceCity: undefined,
@@ -49,10 +60,21 @@ app.controller('route', function($scope, $http, routeService) {
             destinationCity: $scope.query.destinationCity,
             citiesToSkip: selectCititesIds()
         };
-        
-        routeService.findShortestRoute(query).then(function (data) {
-            $scope.displayResult(data);
-        });
+
+        $scope.block();
+
+        routeService.findShortestRoute(query).then(function (response) {
+            $scope.unblock();
+            $scope.displayResult(response.data);
+
+        }, $scope.handleInternalError);
+    };
+
+    $scope.handleInternalError = function (response) { // onError
+        $scope.unblock();
+        $scope.internalError = true;
+
+        console.log(response);
     };
 
     $scope.displayResult = function(result) {
@@ -163,19 +185,10 @@ app.factory('routeService', function ($http) {
 
     return {
         listOfAvailableCitites: function () {
-            return $http.get(citiesPath).then(function (result) {
-                return result.data;
-            });
+            return $http.get(citiesPath);
         },
         findShortestRoute: function(query) {
-            return $http.post(shortestPathUrl, query).then(function(response) {
-
-                return response.data;
-
-            }, function(response) {
-                // TODO: error handling
-                console.log(response);
-            });
+            return $http.post(shortestPathUrl, query);
         }
     };
 });
