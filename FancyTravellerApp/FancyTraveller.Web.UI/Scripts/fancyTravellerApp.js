@@ -4,14 +4,14 @@
 
 var app = angular.module('fancyTraveller', ['ui.bootstrap', 'ui.map', 'ui.event']);
 
-app.controller('suggestingCities', function ($scope, citiesRepository) {
+app.controller('suggestingCities', function ($scope, routeService) {
 
-    citiesRepository.listOfAvailableCitites().then(function (data) {
+    routeService.listOfAvailableCitites().then(function (data) {
         $scope.cities = data;
     });
 });
 
-app.controller('route', function($scope, $http) {
+app.controller('route', function($scope, $http, routeService) {
 
     $scope.query = {
         sourceCity: undefined,
@@ -35,8 +35,6 @@ app.controller('route', function($scope, $http) {
     $scope.findRouteFor = function () {
         $scope.result.show.summary = false;
         
-        var shortestPathUrl = '/api/FindShortestRoute/';
-
         var selectCititesIds = function() {
             var result = [];
             for (var city in $scope.query.citiesToSkip)
@@ -52,13 +50,8 @@ app.controller('route', function($scope, $http) {
             citiesToSkip: selectCititesIds()
         };
         
-        $http.post(shortestPathUrl, query).then(function(response) {
-
-            $scope.displayResult(response.data);
-
-        }, function(response) {
-            // TODO: error handling
-            console.log(response);
+        routeService.findShortestRoute(query).then(function (data) {
+            $scope.displayResult(data);
         });
     };
 
@@ -147,14 +140,25 @@ app.controller('map', ['$scope', function ($scope) {
     });  
 }]);
 
-app.factory('citiesRepository', function citiesRepository($http) {
+app.factory('routeService', function ($http) {
 
     var citiesPath = '/api/AvailableCities/';
+    var shortestPathUrl = '/api/FindShortestRoute/';
 
     return {
         listOfAvailableCitites: function () {
             return $http.get(citiesPath).then(function (result) {
                 return result.data;
+            });
+        },
+        findShortestRoute: function(query) {
+            return $http.post(shortestPathUrl, query).then(function(response) {
+
+                return response.data;
+
+            }, function(response) {
+                // TODO: error handling
+                console.log(response);
             });
         }
     };
