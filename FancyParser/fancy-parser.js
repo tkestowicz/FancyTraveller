@@ -162,18 +162,22 @@ var fancyParser = function(gMaps)
 		distanceBetweenCities.destinationCity.id = prepareId(indexOfDestinationCity);
 		distanceBetweenCities.destinationCity.name = citiesToParse[indexOfDestinationCity][indexOfNameElement];
 		distanceBetweenCities.destinationCity.location = gMaps.getLocationForTheCity(distanceBetweenCities.destinationCity.name);
+
 		distanceBetweenCities.distance = citiesToParse[indexOfDestinationCity][1][indexOfSourceCity];
+
+		if(distanceBetweenCities.distance === 0 || distanceBetweenCities.distance === undefined)
+			distanceBetweenCities.distance = citiesToParse[indexOfSourceCity][1][indexOfDestinationCity];
 
 		return distanceBetweenCities;
 	}
 
-	function parseDistancesForSingleCity(indexOfTheCity)
+	function parseDistancesForSingleCity(indexOfTheCity, listOfCitiesToSkip)
 	{
-		var parsedDistances = [];
+		var parsedDistances = [];		
 
-		for(var cityToCompare = indexOfTheCity; cityToCompare < citiesToParse.length; cityToCompare++)
+		for(var cityToCompare in citiesToParse)
 		{
-			if(cityToCompare == indexOfTheCity) continue;
+			if(indexOfTheCity === parseInt(cityToCompare) || listOfCitiesToSkip.indexOf(parseInt(cityToCompare)) >= 0) continue;
 
 			parsedDistances.push(parseDistanceBetweenCities(indexOfTheCity, cityToCompare));
 		}
@@ -185,16 +189,26 @@ var fancyParser = function(gMaps)
 	{
 		output = [];
 
+		var listOfCitiesToOmmit = (function(){
+			var result = [];
+			for(var indexOfTheCity in citiesToParse)
+				// just to reduce the data returned by a half 
+				if(indexOfTheCity % 2 == 0)
+					result.push(parseInt(indexOfTheCity));
+
+			return result;
+		}());
+
 		for(var indexOfTheCity in citiesToParse)
 		{
-			// just to reduce the data returned by a half 
-			if(indexOfTheCity % 2 == 0) continue;
+			
+			if(listOfCitiesToOmmit.indexOf(parseInt(indexOfTheCity)) >= 0) continue;
 
 			// last element already has connections to all other cities
 			if(indexOfTheCity == citiesToParse.length - 1)
 				break;
 
-			output.push(parseDistancesForSingleCity(indexOfTheCity));
+			output.push(parseDistancesForSingleCity(parseInt(indexOfTheCity), listOfCitiesToOmmit));
 		}
 
 		// flatten array into one dimension
