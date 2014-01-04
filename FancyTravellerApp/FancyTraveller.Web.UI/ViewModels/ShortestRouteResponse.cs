@@ -8,6 +8,6 @@ namespace FancyTraveller.Web.UI.ViewModels
         public City SourceCity { get; set; }
         public City DestinationCity { get; set; }
         public int Distance { get; set; }
-        public IList<City> VisitedCitites { get; set; }
+        public IList<City> VisitedCities { get; set; }
     }
 }
