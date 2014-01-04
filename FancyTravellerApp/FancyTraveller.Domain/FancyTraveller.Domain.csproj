@@ -51,6 +51,7 @@
     <Compile Include="Model\VerticesRepository.cs" />
     <Compile Include="POCO\City.cs" />
     <Compile Include="POCO\Location.cs" />
+    <Compile Include="POCO\Result.cs" />
     <Compile Include="POCO\Vertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IRouteService.cs" />

@@ -35,7 +35,8 @@ namespace FancyTraveller.Web.UI.Controllers
             {
                 SourceCity = request.SourceCity,
                 DestinationCity = request.DestinationCity,
-                Distance = result[result.Count - 1]
+                Distance = result.Distance,
+                VisitedCitites = result.VisitedCities
             };
         }
     }

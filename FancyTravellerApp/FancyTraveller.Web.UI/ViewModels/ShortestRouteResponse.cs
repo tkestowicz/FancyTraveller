@@ -1,4 +1,5 @@
-﻿using FancyTraveller.Domain.POCO;
+﻿using System.Collections.Generic;
+using FancyTraveller.Domain.POCO;
 
 namespace FancyTraveller.Web.UI.ViewModels
 {
@@ -7,5 +8,6 @@ namespace FancyTraveller.Web.UI.ViewModels
         public City SourceCity { get; set; }
         public City DestinationCity { get; set; }
         public int Distance { get; set; }
+        public IList<City> VisitedCitites { get; set; }
     }
 }

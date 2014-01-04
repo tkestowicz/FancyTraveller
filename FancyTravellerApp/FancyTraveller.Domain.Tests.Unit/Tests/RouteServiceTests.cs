@@ -20,7 +20,7 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
         public void InitializeContext()
         {
             repositoryMock = A.Fake<IVertexRepository>();
-            this.service = new RouteService(repositoryMock, new DijkstraRouteFinder());
+            service = new RouteService(repositoryMock, new DijkstraRouteFinder());
         }
 
 
@@ -63,9 +63,13 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
             var result = service.FindShortestRoute(source, destination, listOfNeighboursDistance);
 
             const int expectedDistance = 632;
+            var expectedCitiesToBeVisited = new List<City>()
+            {
+                new City() {Id = 12, Name = "Frankfurt"}
+            };
 
-            int item = result[result.Count - 1];
-            item.ShouldEqual(expectedDistance);
+            result.Distance.ShouldEqual(expectedDistance);
+            result.VisitedCities.ShouldEqual(expectedCitiesToBeVisited);
         }
     }
 }

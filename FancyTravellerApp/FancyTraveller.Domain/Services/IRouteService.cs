@@ -6,7 +6,7 @@ namespace FancyTraveller.Domain.Services
     public interface IRouteService
     {
         IList<City> AvailableCities { get; } 
-        IList<int> FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices);
+        Result FindShortestRoute(int source, int destination, IDictionary<int, IList<Vertex>> vertices);
         IDictionary<int, IList<Vertex>> LoadDistancesBetweenCities(int[] citiesToSkip);
     }
 }

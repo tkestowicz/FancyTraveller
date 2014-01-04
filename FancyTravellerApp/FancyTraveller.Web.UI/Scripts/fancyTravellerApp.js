@@ -28,7 +28,8 @@ app.controller('route', function($scope, $http) {
             source: undefined,
             destination: undefined
         },
-        distance: 0
+        distance: 0,
+        visitedCities: []
     };
 
     $scope.findRouteFor = function () {
@@ -70,6 +71,8 @@ app.controller('route', function($scope, $http) {
             source: new google.maps.LatLng(result.SourceCity.Location.Latitude, result.SourceCity.Location.Longitude),
             destination: new google.maps.LatLng(result.DestinationCity.Location.Latitude, result.DestinationCity.Location.Longitude)
         };
+
+        $scope.result.visitedCities = result.VisitedCities;
     };  
 });
 
