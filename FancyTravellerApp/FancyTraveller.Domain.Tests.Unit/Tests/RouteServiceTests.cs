@@ -65,7 +65,7 @@ namespace FancyTraveller.Domain.Tests.Unit.Tests
             const int expectedDistance = 632;
             var expectedCitiesToBeVisited = new List<City>()
             {
-                new City() {Id = 12, Name = "Frankfurt"}
+                new City() {Id = 12, Name = "Frankfurt"} 
             };
 
             result.Distance.ShouldEqual(expectedDistance);

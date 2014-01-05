@@ -39,13 +39,17 @@ namespace FancyTraveller.Domain.Logic
                         if (listOfDistances[verticeNeighbour] >
                             listOfDistances[verticePickedFromQueue] + toNeighbourCost)
                         {
+
                             listOfDistances[verticeNeighbour] = listOfDistances[verticePickedFromQueue] +
                                                                 toNeighbourCost;
                             allVerticesQueue.Enqueue(verticeNeighbour);
 
                             if (verticePickedFromQueue != sourceTop && verticePickedFromQueue != destinationTop)
                             {
-                                allDataFromFindShortestRoute.Add(verticePickedFromQueue);
+                                if (listOfDistances[verticeNeighbour] == listOfDistances[destinationTop])
+                                {
+                                    allDataFromFindShortestRoute.Add(verticePickedFromQueue);
+                                }
                             }
                         }
                     }
