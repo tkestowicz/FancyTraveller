@@ -127,10 +127,12 @@ app.controller('placesToSkipManagement', function($scope) {
 app.controller('map', ['$scope', function ($scope) {
 
     var markersArray = [];
+    
+
     var line = new google.maps.Polyline({});
 
     $scope.mapOptions = {
-        zoom: 4,
+        zoom: 6,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -162,8 +164,19 @@ app.controller('map', ['$scope', function ($scope) {
 
         $scope.myMarkers = [source, destination];
 
+        var allVisitedCitiesCoordinates = [];
+
+        allVisitedCitiesCoordinates.push($scope.result.positions.source);
+
+        for (var visitedCity in $scope.result.visitedCities) {
+            
+            allVisitedCitiesCoordinates.push(new google.maps.LatLng($scope.result.visitedCities[visitedCity].Location.Latitude, $scope.result.visitedCities[visitedCity].Location.Longitude));
+        }
+
+        allVisitedCitiesCoordinates.push($scope.result.positions.destination);
+
         line = new google.maps.Polyline({
-            path: [$scope.result.positions.source, $scope.result.positions.destination],
+            path: allVisitedCitiesCoordinates,
             strokeColor: "#FF0000",
             strokeOpacity: 0.3,
             strokeWeight: 10,
